@@ -34,6 +34,12 @@ function arg(name: string, def: string): string {
 }
 
 const runs = Number(arg("runs", "3"));
+/**
+ * Batching experiment: with --pack N (Jev only), N scenarios share one
+ * request, as cars in a zone do. Every scenario's own scene is folded into its
+ * car text in both --pack 1 and --pack N, so the two differ only in batching.
+ */
+const pack = Number(arg("pack", "0"));
 const limit = Number(arg("limit", "0"));
 const requested = arg("brains", "rules,mock-jev,jev").split(",") as BrainName[];
 const brains = requested.filter((b) => b !== "jev" || hasKey());
@@ -120,6 +126,49 @@ async function pool<T>(items: T[], n: number, fn: (x: T) => Promise<void>) {
 
 const records: Rec[] = [];
 const started = new Date();
+
+if (pack > 0) {
+  if (!hasKey()) throw new Error("--pack needs TYPESAFE_API_KEY");
+  const packed = (chunk: Scenario[], offset: number): DecisionRequest => ({
+    zoneId: `bench:pack${pack}`,
+    sceneText: "Several separate road situations. Each car's entry describes its own intersection or road segment first, then the car.",
+    cars: chunk.map((s, k) => {
+      const id = String(100 + offset + k);
+      const text = s.perception.text.replace(/^Car \d+\./, `Car ${id}.`);
+      return { carId: id, facts: s.perception.facts, text: `${s.sceneText}\n${text}` };
+    }),
+    simTime: 0,
+  });
+  const chunks: { req: DecisionRequest; items: Scenario[] }[] = [];
+  for (let i = 0; i < scenarios.length; i += pack) {
+    const items = scenarios.slice(i, i + pack);
+    chunks.push({ req: packed(items, i), items });
+  }
+  for (let run = 1; run <= runs; run++) {
+    await pool(chunks, 8, async ({ req, items }) => {
+      await slot();
+      const r = await callJev(req, { timeoutMs: 15000, maxRetries: 2 });
+      r.decisions.forEach((d, k) => {
+        const s = items[k];
+        records.push({
+          brain: "jev", run, id: s.id, category: s.category, expected: s.expectedAction, acceptable: s.acceptableActions,
+          mustStopLabel: s.expectedMustStop, action: d.action, confidence: d.actionConfidence, probs: d.actionProbs,
+          mustStopProb: d.mustStopProb, speedLevel: d.speedLevel, hazardLevel: d.hazardLevel, rightOfWayProb: d.rightOfWayProb,
+          latencyMs: r.jevLatencyMs, inputTokens: r.usage.inputTokens / items.length, tokensEstimated: false, model: r.model,
+          ok: s.acceptableActions.includes(d.action), strict: d.action === s.expectedAction,
+        });
+      });
+    });
+    console.log(`[bench] jev --pack ${pack} run ${run}/${runs} done`);
+  }
+  const acc = (xs: Rec[]) => xs.filter((r) => r.ok).length / Math.max(1, xs.length);
+  const cats = ["rule", "judgment", "ambiguous"] as const;
+  const line = `pack ${pack}: accuracy ${(acc(records) * 100).toFixed(1)}% (${cats.map((c) => `${c} ${(acc(records.filter((r) => r.category === c)) * 100).toFixed(1)}%`).join(", ")}), exact ${((records.filter((r) => r.strict).length / records.length) * 100).toFixed(1)}%, mean confidence ${(records.reduce((a, r) => a + r.confidence, 0) / records.length).toFixed(3)}, p50 latency ${percentile(records.map((r) => r.latencyMs), 50).toFixed(0)} ms per request, ${Math.round(records.reduce((a, r) => a + r.inputTokens, 0) / records.length)} tokens per car`;
+  writeFileSync(resolve(ROOT, `results-pack${pack}.json`), JSON.stringify({ pack, runs, generatedAt: started.toISOString(), summary: line, records }, null, 2) + "\n");
+  console.log(`[bench] ${line}`);
+  process.exit(0);
+}
+
 for (const b of brains) {
   for (let run = 1; run <= runs; run++) {
     const runner = runnerFor(b, 1000 + run);

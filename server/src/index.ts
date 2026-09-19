@@ -60,6 +60,19 @@ app.get("/api/health", (c) =>
   }),
 );
 
+// Benchmark results for the in-app Results tab (written by `pnpm bench`).
+app.get("/api/bench", async (c) => {
+  try {
+    const { readFile } = await import("node:fs/promises");
+    const raw = await readFile(resolve(fileURLToPath(new URL(".", import.meta.url)), "../../bench/results.json"), "utf8");
+    const { records: _records, ...rest } = JSON.parse(raw) as Record<string, unknown>;
+    void _records;
+    return c.json(rest);
+  } catch {
+    return c.json({ error: "No benchmark results yet: run `pnpm bench`." }, 404);
+  }
+});
+
 app.post("/api/decide", async (c) => {
   if (!hasKey()) return c.json({ error: "TYPESAFE_API_KEY is not set in .env" }, 503);
   let req: DecisionRequest;

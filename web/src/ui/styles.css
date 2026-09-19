@@ -1031,3 +1031,78 @@ table.brains td {
     transition: none !important;
   }
 }
+
+/* ------------------------------------------------------------------ results */
+
+.review-note {
+  background: #fff4dc;
+  border: 1.4px solid var(--amber);
+  border-radius: 5px;
+  padding: 7px 9px 5px;
+  font-size: 11.5px;
+  font-weight: 800;
+  color: var(--amber-ink);
+  margin-bottom: 12px;
+}
+
+.res-card {
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  background: var(--panel-2);
+  padding: 8px 10px 6px;
+  margin-bottom: 7px;
+}
+
+.res-top {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+}
+
+.res-acc {
+  margin-left: auto;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.res-sub {
+  font-size: 11px;
+  color: var(--ink-2);
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.res-cat {
+  margin-bottom: 9px;
+}
+
+.res-cat-h {
+  font-size: 9.5px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  color: var(--ink-3);
+  margin-bottom: 3px;
+}
+
+.res-row {
+  display: grid;
+  grid-template-columns: 64px 1fr 40px;
+  gap: 8px;
+  align-items: center;
+  font-size: 11.5px;
+  font-weight: 800;
+  margin: 3px 0;
+}
+
+.res-row span:last-child {
+  text-align: right;
+}
+
+code {
+  font-family: var(--mono);
+  font-size: 0.95em;
+  background: var(--paper-2);
+  padding: 1px 4px;
+  border-radius: 3px;
+}

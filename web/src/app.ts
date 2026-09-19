@@ -121,6 +121,12 @@ export class App {
 
   async refreshHealth() {
     this.health = await checkJevHealth();
+    // Panes built before the health check may need Jev swapped in.
+    if (this.health.ok && this.settings.view === "sbs" && this.panes[1]?.mode !== "jev") this.rebuildPanes();
+    for (const p of this.panes) {
+      p.sim.opts.mixedJevBrain = this.health.ok ? "jev" : "mock-jev";
+      if (p.mode === "mixed") p.sim.setBrainMode("mixed");
+    }
     this.renderTopbar();
     if (!this.health.ok && (this.settings.brainMode === "jev" || this.settings.view === "sbs")) {
       this.flash("Jev is unavailable: start the server with TYPESAFE_API_KEY in .env. Cars fall back to cautious mode.", "warn", 6000);
@@ -167,7 +173,14 @@ export class App {
       el("div", { class: "brand-sub", html: "Traffic judgment<br/>simulator" }),
     ]);
     const jevTitle = this.health.ok ? `Jev (${this.health.model})` : "Needs the server and TYPESAFE_API_KEY";
-    const brain = el("div", { class: "field" }, [
+    const sbsBrains = el("div", { class: "field" }, [
+      el("label", { text: "Side by side" }),
+      el("div", { class: "seg" }, [
+        el("button", { class: "on", "data-tone": "blue", text: "Left: Rules" }),
+        el("button", { class: "on", "data-tone": this.health.ok ? "green" : "green2", text: this.health.ok ? "Right: Jev" : "Right: Mock" }),
+      ]),
+    ]);
+    const brain = s.view === "sbs" ? sbsBrains : el("div", { class: "field" }, [
       el("label", { text: "Brain" }),
       this.seg<BrainMode>(
         [
@@ -508,7 +521,10 @@ export class App {
       const si = m.interventions.length;
       const fb = Object.values(m.brains).reduce((s, b) => s + b.stale + b.lowConf + b.apiErrors, 0);
       const tp = Object.values(m.throughput(p.sim.time)).reduce((a, b) => a + b, 0);
-      p.stats.innerHTML = `<div class="${v ? "bad" : ""}"><b class="num">${v}</b>VIOLATIONS</div><div class="${si ? "warn" : ""}"><b class="num">${si}</b>SAFETY</div><div class="${fb ? "warn" : ""}"><b class="num">${fb}</b>FALLBACKS</div><div><b class="num">${tp.toFixed(0)}</b>EXITS/MIN</div>`;
+      const er = m.eventResults;
+      const eok = er.filter((r) => r.ok).length;
+      const events = er.length ? `<div class="${eok < er.length ? "warn" : ""}"><b class="num">${eok}/${er.length}</b>EVENTS OK</div>` : "";
+      p.stats.innerHTML = `<div class="${v ? "bad" : ""}"><b class="num">${v}</b>VIOLATIONS</div><div class="${si ? "warn" : ""}"><b class="num">${si}</b>SAFETY</div><div class="${fb ? "warn" : ""}"><b class="num">${fb}</b>FALLBACKS</div>${events}<div><b class="num">${tp.toFixed(0)}</b>EXITS/MIN</div>`;
     }
   }
 }

@@ -890,6 +890,8 @@ export class CityRenderer {
     ctx.fillText(`SHEET 1 OF 1  ·  GRID 10 M`, x + 10, y + 53);
     (ctx as CanvasRenderingContext2D & { letterSpacing?: string }).letterSpacing = "0px";
 
+    this.drawLegend(ctx);
+
     // North arrow + scale bar, top-left.
     const nx = 34;
     const ny = 40;
@@ -920,6 +922,81 @@ export class CityRenderer {
     ctx.fillText("25", bx + m50 / 2 - 5, by - 7);
     ctx.fillText("50 M", bx + m50 - 8, by - 7);
     void opts;
+  }
+
+  /** Compact legend, bottom-left, in screen space. */
+  private drawLegend(ctx: CanvasRenderingContext2D) {
+    const x0 = 14;
+    const y0 = this.h - 14 - 50;
+    const w = 318;
+    ctx.fillStyle = "rgba(243,240,231,0.94)";
+    ctx.fillRect(x0, y0, w, 50);
+    ctx.strokeStyle = C.ink;
+    ctx.lineWidth = 1.2;
+    ctx.strokeRect(x0 + 0.5, y0 + 0.5, w, 50);
+    ctx.font = `700 9.5px ${FONT}`;
+    (ctx as CanvasRenderingContext2D & { letterSpacing?: string }).letterSpacing = "0.6px";
+    ctx.textBaseline = "middle";
+    const car = (x: number, y: number, color: string) => {
+      this.roundRectScreen(ctx, x, y - 3.5, 15, 7, 2);
+      ctx.fillStyle = color;
+      ctx.fill();
+      ctx.strokeStyle = C.ink;
+      ctx.lineWidth = 0.8;
+      ctx.stroke();
+    };
+    let x = x0 + 10;
+    const r1 = y0 + 15;
+    for (const [color, text] of [
+      [C.green, "JEV"],
+      [C.greenLight, "MOCK"],
+      [C.blue, "RULES"],
+    ] as const) {
+      car(x, r1, color);
+      ctx.fillStyle = C.ink;
+      ctx.fillText(text, x + 20, r1 + 0.5);
+      x += 20 + ctx.measureText(text).width + 14;
+    }
+    ctx.beginPath();
+    ctx.arc(x + 6, r1, 6, -Math.PI / 2, Math.PI * 1.2);
+    ctx.strokeStyle = C.green;
+    ctx.lineWidth = 1.6;
+    ctx.stroke();
+    ctx.fillStyle = C.ink;
+    ctx.fillText("RING = CONFIDENCE", x + 17, r1 + 0.5);
+    const r2 = y0 + 35;
+    x = x0 + 10;
+    ctx.setLineDash([2.5, 2]);
+    ctx.beginPath();
+    ctx.arc(x + 6, r2, 6, 0, Math.PI * 2);
+    ctx.strokeStyle = C.amber;
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = C.ink;
+    ctx.fillText("FALLBACK", x + 17, r2 + 0.5);
+    x += 17 + ctx.measureText("FALLBACK").width + 14;
+    ctx.beginPath();
+    ctx.arc(x + 6, r2, 6, 0, Math.PI * 2);
+    ctx.strokeStyle = C.stop;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.fillStyle = C.ink;
+    ctx.fillText("VIOLATION", x + 17, r2 + 0.5);
+    x += 17 + ctx.measureText("VIOLATION").width + 14;
+    ctx.beginPath();
+    ctx.arc(x + 4, r2, 4, 0, Math.PI * 2);
+    ctx.fillStyle = C.school;
+    ctx.fill();
+    ctx.strokeStyle = C.ink;
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    ctx.fillStyle = C.ink;
+    ctx.fillText("CHILD / SCHOOL ZONE", x + 13, r2 + 0.5);
+    (ctx as CanvasRenderingContext2D & { letterSpacing?: string }).letterSpacing = "0px";
+  }
+
+  private roundRectScreen(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
+    this.roundRect(ctx, x, y, w, h, r);
   }
 
   /** Car nearest to a screen point, within 18 px. */
