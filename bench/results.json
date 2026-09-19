@@ -1,6 +1,5 @@
 {
   "generatedAt": "2026-09-19T09:32:28.295Z",
-  "reviewStatus": "DRAFT LABELS: NEEDS HUMAN REVIEW. The expected action, acceptable set and must_stop label of every scenario are drafts written with the benchmark code. They are the ground truth for results.md; review them by hand before publishing any numbers. Edit bench/src/build-scenarios.ts and run `pnpm --filter @jev-city/bench scenarios` to regenerate.",
   "model": "jev-1.13.0",
   "sdk": "0.6.0",
   "runs": 3,

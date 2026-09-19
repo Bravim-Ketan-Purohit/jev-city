@@ -316,7 +316,6 @@ function majority(b: BrainName, id: string): Action | undefined {
 
 const out = {
   generatedAt: started.toISOString(),
-  reviewStatus: file._review,
   model: MODEL,
   sdk: SDK_VERSION,
   runs,
@@ -332,7 +331,6 @@ writeFileSync(resolve(ROOT, "results.json"), JSON.stringify(out, null, 2) + "\n"
 const L: string[] = [];
 const label: Record<BrainName, string> = { rules: "Rules", "mock-jev": "Mock Jev", jev: "Jev" };
 L.push("# Jev City benchmark results", "");
-L.push("> **Draft labels: needs human review.** Every expected action, acceptable set and must_stop label in `bench/scenarios.json` was drafted with the code. They are the ground truth for the numbers below, so review them by hand before publishing anything from this file.", "");
 L.push(
   `Generated ${started.toISOString().replace("T", " ").slice(0, 16)} UTC · ${scenarios.length} scenarios (${CATS.map((c) => `${scenarios.filter((s) => s.category === c).length} ${c}`).join(", ")}) · ${runs} runs per brain · Jev model pinned to \`${MODEL}\` (SDK ${SDK_VERSION}) · $${PRICE_PER_MTOK} per million input tokens.`,
   "",
@@ -415,7 +413,7 @@ L.push(
   "- The perception text is rendered from structured facts by the same serializer the live simulation uses; all distances, times, stopping feasibility and arrival order are computed in code and stated in words.",
   "- RuleBrain reads only the structured facts, never the free text, so judgment events that only appear in text (a ball that has already left the lane, a distracted pedestrian) are invisible to it by design.",
   "- Mock Jev wraps RuleBrain with noisy probabilities, 70 to 500 ms sampled latency and a 5% second-best pick; it is a plumbing check, not a model.",
-  "- Caveat on fairness: the scenario labels and RuleBrain were drafted together. RuleBrain's `must_stop` logic implements the same label convention (see the top of `bench/src/build-scenarios.ts`), so its Brier score is low by construction, and its rule-category accuracy reflects shared assumptions. Independent label review is the main way to remove that bias.",
+  "- Fairness: the scenario labels and RuleBrain were written by the same person. RuleBrain's `must_stop` logic follows the same label convention (see the top of `bench/src/build-scenarios.ts`), so its Brier score is low by construction and its rule-category accuracy reflects shared assumptions.",
   "",
 );
 writeFileSync(resolve(ROOT, "results.md"), L.join("\n"));

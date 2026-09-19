@@ -17,7 +17,6 @@ export interface Scenario {
 }
 
 export interface ScenarioFile {
-  _review: string;
   version: number;
   scenarios: Scenario[];
 }

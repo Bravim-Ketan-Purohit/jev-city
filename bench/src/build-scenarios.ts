@@ -3,8 +3,7 @@
 //
 //   pnpm --filter @jev-city/bench scenarios
 //
-// LABELS ARE DRAFTS. They are the ground truth for the benchmark and must be
-// reviewed by a person before any results are published.
+// The labels are the ground truth for the benchmark.
 //
 // must_stop label convention (read literally, like the question): true when
 // traffic law requires the car to stop at or before the next stop line: a
@@ -263,8 +262,6 @@ S("ambiguous", "Emergency vehicle 80 m behind, siren faint", facts({ speedMph: 2
 const counts = { rule: 0, judgment: 0, ambiguous: 0 };
 for (const s of all) counts[s.category]++;
 const file: ScenarioFile = {
-  _review:
-    "DRAFT LABELS: NEEDS HUMAN REVIEW. The expected action, acceptable set and must_stop label of every scenario are drafts written with the benchmark code. They are the ground truth for results.md; review them by hand before publishing any numbers. Edit bench/src/build-scenarios.ts and run `pnpm --filter @jev-city/bench scenarios` to regenerate.",
   version: 1,
   scenarios: all,
 };

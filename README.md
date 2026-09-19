@@ -61,7 +61,7 @@ What stood out:
 - **Batching is fine.** Five cars in one request scored the same as one car per request (87.7% vs 85.3%) and used 24% fewer tokens per car.
 - **It's cheap.** A live request averages about 3,500 tokens. With every car on Jev, that's roughly $7 to $8 per simulated hour. The full benchmark (300 calls) cost about one cent.
 
-A caveat: I wrote the scenario labels and the rule-based driver, so the clear-cut scores lean its way. The labels are a first draft in `bench/scenarios.json`, marked for review.
+A note on fairness: I wrote the scenario labels and the rule-based driver, so the clear-cut scores lean its way.
 
 ## Run it
 

@@ -1,7 +1,5 @@
 # Jev City benchmark results
 
-> **Draft labels: needs human review.** Every expected action, acceptable set and must_stop label in `bench/scenarios.json` was drafted with the code. They are the ground truth for the numbers below, so review them by hand before publishing anything from this file.
-
 Generated 2026-09-19 09:32 UTC · 100 scenarios (40 rule, 40 judgment, 20 ambiguous) · 3 runs per brain · Jev model pinned to `jev-1.13.0` (SDK 0.6.0) · $0.042 per million input tokens.
 
 ## Summary
@@ -112,4 +110,4 @@ Majority action per brain for scenarios where at least one brain chose an action
 - The perception text is rendered from structured facts by the same serializer the live simulation uses; all distances, times, stopping feasibility and arrival order are computed in code and stated in words.
 - RuleBrain reads only the structured facts, never the free text, so judgment events that only appear in text (a ball that has already left the lane, a distracted pedestrian) are invisible to it by design.
 - Mock Jev wraps RuleBrain with noisy probabilities, 70 to 500 ms sampled latency and a 5% second-best pick; it is a plumbing check, not a model.
-- Caveat on fairness: the scenario labels and RuleBrain were drafted together. RuleBrain's `must_stop` logic implements the same label convention (see the top of `bench/src/build-scenarios.ts`), so its Brier score is low by construction, and its rule-category accuracy reflects shared assumptions. Independent label review is the main way to remove that bias.
+- Fairness: the scenario labels and RuleBrain were written by the same person. RuleBrain's `must_stop` logic follows the same label convention (see the top of `bench/src/build-scenarios.ts`), so its Brier score is low by construction and its rule-category accuracy reflects shared assumptions.

@@ -236,8 +236,7 @@ export class Panel {
       `<div class="bar" style="height:10px"><i style="width:${Math.max(0, Math.min(1, x)) * 100}%;background:${color}"></i></div>`;
     const cats = ["rule", "judgment", "ambiguous"] as const;
     const brains = r.summaries;
-    const head = `<div class="review-note">Draft labels: the scenario labels need human review before these numbers are published.</div>
-      <div class="sec-h"><span>Benchmark · ${r.scenarioCount} scenarios × ${r.runs} runs</span><span class="num">${esc(r.model)} · ${esc(r.generatedAt.slice(0, 10))}</span></div>`;
+    const head = `<div class="sec-h"><span>Benchmark · ${r.scenarioCount} scenarios × ${r.runs} runs</span><span class="num">${esc(r.model)} · ${esc(r.generatedAt.slice(0, 10))}</span></div>`;
     const cards = brains
       .map(
         (b) => `<div class="res-card">

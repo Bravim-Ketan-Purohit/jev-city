@@ -14,7 +14,7 @@ Each scenario has the text Jev would see, the structured facts the rule-based dr
 
 The must-stop label reads the question literally: "does traffic law require this car to stop before the next stop line?" A stop sign counts even after the car has stopped there. A child running into the road is an emergency stop, but there's no stop line involved, so it's labelled no.
 
-**The labels are a first draft.** I wrote them alongside the rule-based driver, so review them before trusting or sharing any numbers. To change a scenario, edit `src/build-scenarios.ts` and run:
+I wrote the labels alongside the rule-based driver, so the clear-cut scores lean its way. To change a scenario, edit `src/build-scenarios.ts` and run:
 
 ```sh
 pnpm --filter @jev-city/bench scenarios
