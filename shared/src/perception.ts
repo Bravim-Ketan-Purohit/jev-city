@@ -230,11 +230,12 @@ export function renderSceneText(s: SceneFacts): string {
   if (s.signalText) out.push(`Signal: ${s.signalText}`);
   if (s.walkText) out.push(`Pedestrian signals: ${s.walkText}`);
   if (s.schoolZoneActive) out.push("School zone ACTIVE: 20 mph.");
-  out.push(
-    s.carsInBox.length
-      ? `Inside the intersection box: ${s.carsInBox.join("; ")}.`
-      : "Inside the intersection box: no vehicles.",
-  );
+  if (!s.zoneId.startsWith("seg:"))
+    out.push(
+      s.carsInBox.length
+        ? `Inside the intersection box: ${s.carsInBox.join("; ")}.`
+        : "Inside the intersection box: no vehicles.",
+    );
   if (s.arrivalOrder && s.arrivalOrder.length)
     out.push(`All-way stop arrival order: ${s.arrivalOrder.join(", then ")}.`);
   if (s.events.length) out.push(`Active events: ${s.events.join(" ")}`);

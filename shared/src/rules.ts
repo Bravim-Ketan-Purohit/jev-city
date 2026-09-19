@@ -31,16 +31,17 @@ function lawRequiresStop(f: PerceptionFacts): boolean {
   if (f.officerCommand === "go") return false;
   if (f.flagger?.command === "stop") return true;
   if (f.pedestriansInCrosswalk > 0 && (f.crosswalkAheadM ?? Infinity) <= 40) return true;
+  if (f.emergencyVehicleCrossingM !== undefined && f.nextControl.kind !== "none") return true;
   const nc = f.nextControl;
-  if (nc.kind === "stop_sign") return !f.hasStoppedAtLine;
+  // A stop sign or flashing red requires a stop at the line, even once made.
+  if (nc.kind === "stop_sign") return true;
   if (nc.kind === "light") {
     switch (nc.lightState) {
       case "red":
+      case "flashing_red":
         return true;
       case "yellow":
         return nc.canStopComfortably === true;
-      case "flashing_red":
-        return !f.hasStoppedAtLine;
       default:
         return false;
     }

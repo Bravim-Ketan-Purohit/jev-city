@@ -1,0 +1,3126 @@
+{
+  "_review": "DRAFT LABELS: NEEDS HUMAN REVIEW. The expected action, acceptable set and must_stop label of every scenario are drafts written with the benchmark code. They are the ground truth for results.md; review them by hand before publishing any numbers. Edit bench/src/build-scenarios.ts and run `pnpm --filter @jev-city/bench scenarios` to regenerate.",
+  "version": 1,
+  "scenarios": [
+    {
+      "id": "R01",
+      "category": "rule",
+      "title": "Red light, 45 m ahead at 25 mph",
+      "sceneText": "Intersection D (Maple St and Oak St): traffic light.\nSignal: Maple St (north-south) RED, changes in about 8 s; Oak St (east-west) GREEN, changes in about 12 s.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "17",
+        "facts": {
+          "speedMph": 25,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 45,
+            "lightState": "red",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight"
+        },
+        "text": "Car 17. Current speed 25 mph. Limit here 25 mph.\nNext control: traffic light, stop line 45 m ahead, going straight. Light is RED.\nComfortable stop before the line: YES.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "stop_at_line",
+      "acceptableActions": [
+        "stop_at_line",
+        "slow_down"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "R02",
+      "category": "rule",
+      "title": "Red light, stopped at the line",
+      "sceneText": "Intersection A (Grand Ave and Elm St): traffic light with crosswalks.\nSignal: Grand Ave (north-south) RED, changes in about 8 s; Elm St (east-west) GREEN, changes in about 12 s.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "24",
+        "facts": {
+          "speedMph": 0,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 1,
+            "lightState": "red",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight"
+        },
+        "text": "Car 24. Current speed 0 mph. Limit here 25 mph.\nNext control: traffic light, stop line 1 m ahead, going straight. Light is RED.\nComfortable stop before the line: YES.\nVehicle ahead: none within 60 m. Vehicle behind: 3 m back, 0 mph.\nEmergency vehicles: none."
+      },
+      "expectedAction": "stop_at_line",
+      "acceptableActions": [
+        "stop_at_line",
+        "yield"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "R03",
+      "category": "rule",
+      "title": "Red light, 20 m ahead at 18 mph",
+      "sceneText": "Intersection C (Grand Ave and Oak St): traffic light with crosswalks.\nSignal: Grand Ave (north-south) GREEN, changes in about 8 s; Oak St (east-west) RED, changes in about 12 s.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "31",
+        "facts": {
+          "speedMph": 18,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 20,
+            "lightState": "red",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "right"
+        },
+        "text": "Car 31. Current speed 18 mph. Limit here 25 mph.\nNext control: traffic light, stop line 20 m ahead, turning right. Light is RED.\nComfortable stop before the line: YES.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "stop_at_line",
+      "acceptableActions": [
+        "stop_at_line"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "R04",
+      "category": "rule",
+      "title": "Red light on the 35 mph arterial, 70 m ahead",
+      "sceneText": "Intersection A (Grand Ave and Elm St): traffic light with crosswalks.\nSignal: Grand Ave (north-south) RED, changes in about 8 s; Elm St (east-west) GREEN, changes in about 12 s.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "38",
+        "facts": {
+          "speedMph": 34,
+          "limitMph": 35,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 70,
+            "lightState": "red",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight"
+        },
+        "text": "Car 38. Current speed 34 mph. Limit here 35 mph.\nNext control: traffic light, stop line 70 m ahead, going straight. Light is RED.\nComfortable stop before the line: YES.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "stop_at_line",
+      "acceptableActions": [
+        "stop_at_line",
+        "slow_down"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "R05",
+      "category": "rule",
+      "title": "Green light, 50 m ahead, clear",
+      "sceneText": "Intersection D (Maple St and Oak St): traffic light.\nSignal: Maple St (north-south) GREEN, changes in about 8 s; Oak St (east-west) RED, changes in about 12 s.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "45",
+        "facts": {
+          "speedMph": 24,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 50,
+            "lightState": "green",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight",
+          "intersectionClear": true,
+          "exitHasRoom": true
+        },
+        "text": "Car 45. Current speed 24 mph. Limit here 25 mph.\nNext control: traffic light, stop line 50 m ahead, going straight. Light is GREEN.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "proceed",
+      "acceptableActions": [
+        "proceed"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "R06",
+      "category": "rule",
+      "title": "Green light, 15 m ahead, clear",
+      "sceneText": "Intersection D (Maple St and Oak St): traffic light.\nSignal: Maple St (north-south) GREEN, changes in about 8 s; Oak St (east-west) RED, changes in about 12 s.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "52",
+        "facts": {
+          "speedMph": 25,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 15,
+            "lightState": "green",
+            "canStopComfortably": false
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight",
+          "intersectionClear": true,
+          "exitHasRoom": true
+        },
+        "text": "Car 52. Current speed 25 mph. Limit here 25 mph.\nNext control: traffic light, stop line 15 m ahead, going straight. Light is GREEN.\nVehicle ahead: none within 60 m. Vehicle behind: 20 m back, 24 mph.\nEmergency vehicles: none."
+      },
+      "expectedAction": "proceed",
+      "acceptableActions": [
+        "proceed"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "R07",
+      "category": "rule",
+      "title": "Green light on the arterial, 35 mph",
+      "sceneText": "Intersection A (Grand Ave and Elm St): traffic light with crosswalks.\nSignal: Grand Ave (north-south) GREEN, changes in about 14 s; Elm St (east-west) RED, changes in about 12 s.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "59",
+        "facts": {
+          "speedMph": 35,
+          "limitMph": 35,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 60,
+            "lightState": "green",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight",
+          "intersectionClear": true,
+          "exitHasRoom": true
+        },
+        "text": "Car 59. Current speed 35 mph. Limit here 35 mph.\nNext control: traffic light, stop line 60 m ahead, going straight. Light is GREEN.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "proceed",
+      "acceptableActions": [
+        "proceed"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "R08",
+      "category": "rule",
+      "title": "Green light, turning right, clear",
+      "sceneText": "Intersection D (Maple St and Oak St): traffic light.\nSignal: Maple St (north-south) RED, changes in about 8 s; Oak St (east-west) GREEN, changes in about 12 s.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "66",
+        "facts": {
+          "speedMph": 14,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 12,
+            "lightState": "green",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "right",
+          "intersectionClear": true,
+          "exitHasRoom": true
+        },
+        "text": "Car 66. Current speed 14 mph. Limit here 25 mph.\nNext control: traffic light, stop line 12 m ahead, turning right. Light is GREEN.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "proceed",
+      "acceptableActions": [
+        "proceed",
+        "slow_down"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "R09",
+      "category": "rule",
+      "title": "Yellow, 45 m ahead at 30 mph: can stop, will not clear",
+      "sceneText": "Intersection A (Grand Ave and Elm St): traffic light with crosswalks.\nSignal: Grand Ave (north-south) YELLOW, changes in about 3 s; Elm St (east-west) RED, changes in about 12 s.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "73",
+        "facts": {
+          "speedMph": 30,
+          "limitMph": 35,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 45,
+            "lightState": "yellow",
+            "secondsToRed": 3,
+            "canStopComfortably": true,
+            "willClearBeforeRed": false
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight"
+        },
+        "text": "Car 73. Current speed 30 mph. Limit here 35 mph.\nNext control: traffic light, stop line 45 m ahead, going straight. Light is YELLOW and turns red in about 3 s.\nAt current speed this car reaches the stop line in 3.4 s, so it will NOT clear before red.\nComfortable stop before the line: YES.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "stop_at_line",
+      "acceptableActions": [
+        "stop_at_line"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "R10",
+      "category": "rule",
+      "title": "Yellow, 6 m ahead at 30 mph: cannot stop comfortably",
+      "sceneText": "Intersection A (Grand Ave and Elm St): traffic light with crosswalks.\nSignal: Grand Ave (north-south) YELLOW, changes in about 4 s; Elm St (east-west) RED, changes in about 12 s.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "80",
+        "facts": {
+          "speedMph": 30,
+          "limitMph": 35,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 6,
+            "lightState": "yellow",
+            "secondsToRed": 3.5,
+            "canStopComfortably": false,
+            "willClearBeforeRed": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight"
+        },
+        "text": "Car 80. Current speed 30 mph. Limit here 35 mph.\nNext control: traffic light, stop line 6 m ahead, going straight. Light is YELLOW and turns red in about 3.5 s.\nAt current speed this car reaches the stop line in 0.4 s, so it WILL clear before red.\nComfortable stop before the line: NO.\nVehicle ahead: none within 60 m. Vehicle behind: 10 m back, 29 mph.\nEmergency vehicles: none."
+      },
+      "expectedAction": "proceed",
+      "acceptableActions": [
+        "proceed"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "R11",
+      "category": "rule",
+      "title": "Yellow, 60 m ahead at 25 mph",
+      "sceneText": "Intersection D (Maple St and Oak St): traffic light.\nSignal: Maple St (north-south) YELLOW, changes in about 3 s; Oak St (east-west) RED, changes in about 12 s.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "87",
+        "facts": {
+          "speedMph": 25,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 60,
+            "lightState": "yellow",
+            "secondsToRed": 3.2,
+            "canStopComfortably": true,
+            "willClearBeforeRed": false
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight"
+        },
+        "text": "Car 87. Current speed 25 mph. Limit here 25 mph.\nNext control: traffic light, stop line 60 m ahead, going straight. Light is YELLOW and turns red in about 3.2 s.\nAt current speed this car reaches the stop line in 5.4 s, so it will NOT clear before red.\nComfortable stop before the line: YES.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "stop_at_line",
+      "acceptableActions": [
+        "stop_at_line",
+        "slow_down"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "R12",
+      "category": "rule",
+      "title": "Yellow, 4 m ahead at 35 mph",
+      "sceneText": "Intersection C (Grand Ave and Oak St): traffic light with crosswalks.\nSignal: Grand Ave (north-south) YELLOW, changes in about 4 s; Oak St (east-west) RED, changes in about 12 s.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "14",
+        "facts": {
+          "speedMph": 35,
+          "limitMph": 35,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 4,
+            "lightState": "yellow",
+            "secondsToRed": 3.8,
+            "canStopComfortably": false,
+            "willClearBeforeRed": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight"
+        },
+        "text": "Car 14. Current speed 35 mph. Limit here 35 mph.\nNext control: traffic light, stop line 4 m ahead, going straight. Light is YELLOW and turns red in about 3.8 s.\nAt current speed this car reaches the stop line in 0.3 s, so it WILL clear before red.\nComfortable stop before the line: NO.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "proceed",
+      "acceptableActions": [
+        "proceed"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "R13",
+      "category": "rule",
+      "title": "Yellow, 30 m ahead at 22 mph",
+      "sceneText": "Intersection D (Maple St and Oak St): traffic light.\nSignal: Maple St (north-south) RED, changes in about 8 s; Oak St (east-west) YELLOW, changes in about 2 s.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "21",
+        "facts": {
+          "speedMph": 22,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 30,
+            "lightState": "yellow",
+            "secondsToRed": 2.5,
+            "canStopComfortably": true,
+            "willClearBeforeRed": false
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "left"
+        },
+        "text": "Car 21. Current speed 22 mph. Limit here 25 mph.\nNext control: traffic light, stop line 30 m ahead, turning left. Light is YELLOW and turns red in about 2.5 s.\nAt current speed this car reaches the stop line in 3.1 s, so it will NOT clear before red.\nComfortable stop before the line: YES.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "stop_at_line",
+      "acceptableActions": [
+        "stop_at_line"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "R14",
+      "category": "rule",
+      "title": "Yellow, 11 m ahead at 34 mph",
+      "sceneText": "Intersection A (Grand Ave and Elm St): traffic light with crosswalks.\nSignal: Grand Ave (north-south) YELLOW, changes in about 4 s; Elm St (east-west) RED, changes in about 12 s.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "28",
+        "facts": {
+          "speedMph": 34,
+          "limitMph": 35,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 11,
+            "lightState": "yellow",
+            "secondsToRed": 3.9,
+            "canStopComfortably": false,
+            "willClearBeforeRed": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight"
+        },
+        "text": "Car 28. Current speed 34 mph. Limit here 35 mph.\nNext control: traffic light, stop line 11 m ahead, going straight. Light is YELLOW and turns red in about 3.9 s.\nAt current speed this car reaches the stop line in 0.7 s, so it WILL clear before red.\nComfortable stop before the line: NO.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "proceed",
+      "acceptableActions": [
+        "proceed"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "R15",
+      "category": "rule",
+      "title": "Stop sign 35 m ahead, not yet stopped",
+      "sceneText": "Intersection B (Maple St and Elm St): all-way stop.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "35",
+        "facts": {
+          "speedMph": 24,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "stop_sign",
+            "distanceM": 35
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight",
+          "hasStoppedAtLine": false,
+          "intersectionClear": true
+        },
+        "text": "Car 35. Current speed 24 mph. Limit here 25 mph.\nNext control: all-way stop sign, stop line 35 m ahead, going straight.\nFull stop at the line already made: NO.\nCrossing traffic inside the intersection box: none.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "stop_at_line",
+      "acceptableActions": [
+        "stop_at_line",
+        "slow_down"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "R16",
+      "category": "rule",
+      "title": "Stop sign 8 m ahead at 10 mph",
+      "sceneText": "Intersection B (Maple St and Elm St): all-way stop.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "42",
+        "facts": {
+          "speedMph": 10,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "stop_sign",
+            "distanceM": 8
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "right",
+          "hasStoppedAtLine": false,
+          "intersectionClear": true
+        },
+        "text": "Car 42. Current speed 10 mph. Limit here 25 mph.\nNext control: all-way stop sign, stop line 8 m ahead, turning right.\nFull stop at the line already made: NO.\nCrossing traffic inside the intersection box: none.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "stop_at_line",
+      "acceptableActions": [
+        "stop_at_line"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "R17",
+      "category": "rule",
+      "title": "Stopped at stop sign, arrived first, box clear",
+      "sceneText": "Intersection B (Maple St and Elm St): all-way stop.\nInside the intersection box: no vehicles.\nAll-way stop arrival order: car 31 (from the south), then car 44 (from the east).",
+      "perception": {
+        "carId": "49",
+        "facts": {
+          "speedMph": 0,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "stop_sign",
+            "distanceM": 1
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight",
+          "hasStoppedAtLine": true,
+          "arrivalRankAtStop": 1,
+          "earlierConflictingCars": 0,
+          "intersectionClear": true,
+          "exitHasRoom": true
+        },
+        "text": "Car 49. Current speed 0 mph. Limit here 25 mph.\nNext control: all-way stop sign, stop line 1 m ahead, going straight.\nFull stop at the line already made: YES.\nArrival order: this car arrived 1st of 2 waiting cars. No earlier arrival crosses this car's path.\nCrossing traffic inside the intersection box: none.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "proceed",
+      "acceptableActions": [
+        "proceed"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "R18",
+      "category": "rule",
+      "title": "Stopped at stop sign, arrived second, earlier car crosses its path",
+      "sceneText": "Intersection B (Maple St and Elm St): all-way stop.\nInside the intersection box: no vehicles.\nAll-way stop arrival order: car 22 (from the east), then car 58 (from the south).",
+      "perception": {
+        "carId": "56",
+        "facts": {
+          "speedMph": 0,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "stop_sign",
+            "distanceM": 1
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight",
+          "hasStoppedAtLine": true,
+          "arrivalRankAtStop": 2,
+          "earlierConflictingCars": 1,
+          "intersectionClear": true
+        },
+        "text": "Car 56. Current speed 0 mph. Limit here 25 mph.\nNext control: all-way stop sign, stop line 1 m ahead, going straight.\nFull stop at the line already made: YES.\nArrival order: this car arrived 2nd of 2 waiting cars. Earlier arrivals crossing this car's path: 1 (car 22 from the east).\nCrossing traffic inside the intersection box: none.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "yield",
+      "acceptableActions": [
+        "yield",
+        "stop_at_line"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "R19",
+      "category": "rule",
+      "title": "Stopped at stop sign, first, but crossing car inside the box",
+      "sceneText": "Intersection B (Maple St and Elm St): all-way stop.\nInside the intersection box: car 19 (westbound, going straight).",
+      "perception": {
+        "carId": "63",
+        "facts": {
+          "speedMph": 0,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "stop_sign",
+            "distanceM": 1
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "left",
+          "hasStoppedAtLine": true,
+          "arrivalRankAtStop": 1,
+          "earlierConflictingCars": 0,
+          "intersectionClear": false
+        },
+        "text": "Car 63. Current speed 0 mph. Limit here 25 mph.\nNext control: all-way stop sign, stop line 1 m ahead, turning left.\nFull stop at the line already made: YES.\nArrival order: this car arrived 1st. No earlier arrival crosses this car's path.\nCrossing traffic inside the intersection box: YES (car 19 (westbound, going straight)).\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "yield",
+      "acceptableActions": [
+        "yield",
+        "stop_at_line"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "R20",
+      "category": "rule",
+      "title": "Stopped at stop sign, first, turning left, box clear",
+      "sceneText": "Intersection B (Maple St and Elm St): all-way stop.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "70",
+        "facts": {
+          "speedMph": 0,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "stop_sign",
+            "distanceM": 1
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "left",
+          "hasStoppedAtLine": true,
+          "arrivalRankAtStop": 1,
+          "earlierConflictingCars": 0,
+          "intersectionClear": true,
+          "exitHasRoom": true
+        },
+        "text": "Car 70. Current speed 0 mph. Limit here 25 mph.\nNext control: all-way stop sign, stop line 1 m ahead, turning left.\nFull stop at the line already made: YES.\nArrival order: this car arrived 1st. No earlier arrival crosses this car's path.\nCrossing traffic inside the intersection box: none.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "proceed",
+      "acceptableActions": [
+        "proceed"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "R21",
+      "category": "rule",
+      "title": "Failed signal (flashing red), 25 m ahead",
+      "sceneText": "Intersection D (Maple St and Oak St): traffic signal FAILED, flashing red on all approaches: all-way stop.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "77",
+        "facts": {
+          "speedMph": 22,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 25,
+            "lightState": "flashing_red",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight",
+          "hasStoppedAtLine": false,
+          "intersectionClear": true
+        },
+        "text": "Car 77. Current speed 22 mph. Limit here 25 mph.\nNext control: traffic signal, stop line 25 m ahead, going straight. The signal has FAILED and is FLASHING RED: it works as an all-way stop.\nFull stop at the line already made: NO.\nCrossing traffic inside the intersection box: none.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "stop_at_line",
+      "acceptableActions": [
+        "stop_at_line",
+        "slow_down"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "R22",
+      "category": "rule",
+      "title": "Failed signal, stopped, arrived first, clear",
+      "sceneText": "Intersection D (Maple St and Oak St): traffic signal FAILED, flashing red on all approaches: all-way stop.\nInside the intersection box: no vehicles.\nAll-way stop arrival order: car 71 (from the west), then car 12 (from the north).",
+      "perception": {
+        "carId": "84",
+        "facts": {
+          "speedMph": 0,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 1,
+            "lightState": "flashing_red",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "right",
+          "hasStoppedAtLine": true,
+          "arrivalRankAtStop": 1,
+          "earlierConflictingCars": 0,
+          "intersectionClear": true,
+          "exitHasRoom": true
+        },
+        "text": "Car 84. Current speed 0 mph. Limit here 25 mph.\nNext control: traffic signal, stop line 1 m ahead, turning right. The signal has FAILED and is FLASHING RED: it works as an all-way stop.\nFull stop at the line already made: YES.\nArrival order: this car arrived 1st of 2 waiting cars. No earlier arrival crosses this car's path.\nCrossing traffic inside the intersection box: none.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "proceed",
+      "acceptableActions": [
+        "proceed"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "R23",
+      "category": "rule",
+      "title": "Open road at the limit, nothing ahead",
+      "sceneText": "Road segment (Elm St E): no traffic control on this segment.",
+      "perception": {
+        "carId": "11",
+        "facts": {
+          "speedMph": 25,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "none",
+            "distanceM": 0
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0
+        },
+        "text": "Car 11. Current speed 25 mph. Limit here 25 mph.\nNext control: none within 80 m.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "proceed",
+      "acceptableActions": [
+        "proceed"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "R24",
+      "category": "rule",
+      "title": "Open road on the arterial, car ahead moving",
+      "sceneText": "Road segment (Grand Ave S): no traffic control on this segment.",
+      "perception": {
+        "carId": "18",
+        "facts": {
+          "speedMph": 33,
+          "limitMph": 35,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "none",
+            "distanceM": 0
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "leadVehicle": {
+            "distanceM": 40,
+            "speedMph": 34,
+            "stopped": false
+          }
+        },
+        "text": "Car 18. Current speed 33 mph. Limit here 35 mph.\nNext control: none within 80 m.\nVehicle ahead: 40 m, 34 mph.\nEmergency vehicles: none."
+      },
+      "expectedAction": "proceed",
+      "acceptableActions": [
+        "proceed"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "R25",
+      "category": "rule",
+      "title": "Two pedestrians in the crosswalk 12 m ahead, green light",
+      "sceneText": "Intersection C (Grand Ave and Oak St): traffic light with crosswalks.\nSignal: Grand Ave (north-south) GREEN, changes in about 8 s; Oak St (east-west) RED, changes in about 12 s.\nPedestrian signals: crossing Grand Ave: DON'T WALK; crossing Oak St: WALK.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "25",
+        "facts": {
+          "speedMph": 15,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 5,
+            "lightState": "green",
+            "canStopComfortably": false
+          },
+          "pedestriansInCrosswalk": 2,
+          "pedestriansAtCurb": 0,
+          "turn": "straight",
+          "crosswalkAheadM": 12,
+          "intersectionClear": true
+        },
+        "text": "Car 25. Current speed 15 mph. Limit here 25 mph.\nNext control: traffic light, stop line 5 m ahead, going straight. Light is GREEN.\nCrosswalk 12 m ahead (on the far side of the intersection): 2 pedestrians in it.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "yield",
+      "acceptableActions": [
+        "yield",
+        "stop_at_line"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "R26",
+      "category": "rule",
+      "title": "Turning right on green, pedestrian in the crosswalk past the turn",
+      "sceneText": "Intersection C (Grand Ave and Oak St): traffic light with crosswalks.\nSignal: Grand Ave (north-south) RED, changes in about 8 s; Oak St (east-west) GREEN, changes in about 12 s.\nPedestrian signals: crossing Grand Ave: WALK; crossing Oak St: DON'T WALK.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "32",
+        "facts": {
+          "speedMph": 8,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 3,
+            "lightState": "green",
+            "canStopComfortably": false
+          },
+          "pedestriansInCrosswalk": 1,
+          "pedestriansAtCurb": 0,
+          "turn": "right",
+          "crosswalkAheadM": 14,
+          "intersectionClear": true
+        },
+        "text": "Car 32. Current speed 8 mph. Limit here 25 mph.\nNext control: traffic light, stop line 3 m ahead, turning right. Light is GREEN.\nCrosswalk 14 m ahead (just past the turn): 1 pedestrian in it.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "yield",
+      "acceptableActions": [
+        "yield",
+        "stop_at_line",
+        "slow_down"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "R27",
+      "category": "rule",
+      "title": "Inside the box, turning right, pedestrian in the exit crosswalk",
+      "sceneText": "Intersection C (Grand Ave and Oak St): traffic light with crosswalks.\nSignal: Grand Ave (north-south) RED, changes in about 8 s; Oak St (east-west) GREEN, changes in about 12 s.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "39",
+        "facts": {
+          "speedMph": 6,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "none",
+            "distanceM": 0
+          },
+          "pedestriansInCrosswalk": 1,
+          "pedestriansAtCurb": 0,
+          "inIntersection": true,
+          "turn": "right",
+          "intersectionClear": true,
+          "crosswalkAheadM": 4
+        },
+        "text": "Car 39. Current speed 6 mph. Limit here 25 mph.\nThis car is inside the intersection box now, turning right; it has already crossed the stop line.\nCrossing traffic inside the intersection box: none.\nCrosswalk 4 m ahead (just past the turn): 1 pedestrian in it.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "yield",
+      "acceptableActions": [
+        "yield",
+        "emergency_stop",
+        "stop_at_line"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "R28",
+      "category": "rule",
+      "title": "Inside the box going straight, clear",
+      "sceneText": "Intersection D (Maple St and Oak St): traffic light.\nSignal: Maple St (north-south) GREEN, changes in about 8 s; Oak St (east-west) RED, changes in about 12 s.\nInside the intersection box: car 40 (southbound, going straight).",
+      "perception": {
+        "carId": "46",
+        "facts": {
+          "speedMph": 24,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "none",
+            "distanceM": 0
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "inIntersection": true,
+          "turn": "straight",
+          "intersectionClear": true
+        },
+        "text": "Car 46. Current speed 24 mph. Limit here 25 mph.\nThis car is inside the intersection box now, going straight; it has already crossed the stop line.\nCrossing traffic inside the intersection box: none.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "proceed",
+      "acceptableActions": [
+        "proceed"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "R29",
+      "category": "rule",
+      "title": "Left turn on green, oncoming car 20 m away",
+      "sceneText": "Intersection D (Maple St and Oak St): traffic light.\nSignal: Maple St (north-south) GREEN, changes in about 8 s; Oak St (east-west) RED, changes in about 12 s.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "53",
+        "facts": {
+          "speedMph": 4,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 2,
+            "lightState": "green",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "left",
+          "intersectionClear": true,
+          "oncomingGapSafe": false,
+          "exitHasRoom": true
+        },
+        "text": "Car 53. Current speed 4 mph. Limit here 25 mph.\nNext control: traffic light, stop line 2 m ahead, turning left. Light is GREEN.\nOncoming traffic gap long enough to complete the left turn: NO (car 63 is 20 m away at 25 mph, arriving in about 1.8 s).\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "yield",
+      "acceptableActions": [
+        "yield",
+        "stop_at_line"
+      ],
+      "expectedMustStop": false,
+      "notes": "Left turns may legally enter and wait; stopping before the line is not strictly required."
+    },
+    {
+      "id": "R30",
+      "category": "rule",
+      "title": "Left turn on green, oncoming gap is long enough",
+      "sceneText": "Intersection D (Maple St and Oak St): traffic light.\nSignal: Maple St (north-south) GREEN, changes in about 8 s; Oak St (east-west) RED, changes in about 12 s.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "60",
+        "facts": {
+          "speedMph": 8,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 6,
+            "lightState": "green",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "left",
+          "intersectionClear": true,
+          "oncomingGapSafe": true,
+          "exitHasRoom": true
+        },
+        "text": "Car 60. Current speed 8 mph. Limit here 25 mph.\nNext control: traffic light, stop line 6 m ahead, turning left. Light is GREEN.\nOncoming traffic gap long enough to complete the left turn: YES.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "proceed",
+      "acceptableActions": [
+        "proceed",
+        "slow_down"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "R31",
+      "category": "rule",
+      "title": "Green light but the exit lane is backed up",
+      "sceneText": "Intersection A (Grand Ave and Elm St): traffic light with crosswalks.\nSignal: Grand Ave (north-south) GREEN, changes in about 8 s; Elm St (east-west) RED, changes in about 12 s.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "67",
+        "facts": {
+          "speedMph": 10,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 8,
+            "lightState": "green",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight",
+          "intersectionClear": true,
+          "exitHasRoom": false
+        },
+        "text": "Car 67. Current speed 10 mph. Limit here 25 mph.\nNext control: traffic light, stop line 8 m ahead, going straight. Light is GREEN.\nExit lane past the intersection is backed up: no room for this car on the far side.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "stop_at_line",
+      "acceptableActions": [
+        "stop_at_line",
+        "yield"
+      ],
+      "expectedMustStop": true,
+      "notes": "Do not block the box."
+    },
+    {
+      "id": "R32",
+      "category": "rule",
+      "title": "Officer waves the lane through a red light",
+      "sceneText": "Intersection A (Grand Ave and Elm St): traffic light with crosswalks.\nSignal: Grand Ave (north-south) RED, changes in about 8 s; Elm St (east-west) GREEN, changes in about 12 s.\nInside the intersection box: no vehicles.\nActive events: Police officer in the intersection, holding Elm St (green) and waving Grand Ave through its red.",
+      "perception": {
+        "carId": "74",
+        "facts": {
+          "speedMph": 0,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 1,
+            "lightState": "red",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight",
+          "officerCommand": "go",
+          "intersectionClear": true,
+          "exitHasRoom": true
+        },
+        "text": "Car 74. Current speed 0 mph. Limit here 25 mph.\nNext control: traffic light, stop line 1 m ahead, going straight. Light is RED.\nComfortable stop before the line: YES.\nPolice officer in the intersection is waving this lane through; the officer overrides the signal.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "proceed",
+      "acceptableActions": [
+        "proceed"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "R33",
+      "category": "rule",
+      "title": "Officer holds the lane on a green light",
+      "sceneText": "Intersection A (Grand Ave and Elm St): traffic light with crosswalks.\nSignal: Grand Ave (north-south) GREEN, changes in about 8 s; Elm St (east-west) RED, changes in about 12 s.\nInside the intersection box: no vehicles.\nActive events: Police officer in the intersection, holding Grand Ave (green) and waving Elm St through its red.",
+      "perception": {
+        "carId": "81",
+        "facts": {
+          "speedMph": 20,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 30,
+            "lightState": "green",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight",
+          "officerCommand": "stop",
+          "intersectionClear": true
+        },
+        "text": "Car 81. Current speed 20 mph. Limit here 25 mph.\nNext control: traffic light, stop line 30 m ahead, going straight. Light is GREEN.\nPolice officer in the intersection is holding this lane with a raised hand; the officer overrides the signal.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "stop_at_line",
+      "acceptableActions": [
+        "stop_at_line",
+        "yield"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "R34",
+      "category": "rule",
+      "title": "Construction flagger shows STOP 30 m ahead",
+      "sceneText": "Road segment (Elm St W): no traffic control on this segment.",
+      "perception": {
+        "carId": "88",
+        "facts": {
+          "speedMph": 22,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "none",
+            "distanceM": 0
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "flagger": {
+            "command": "stop",
+            "distanceM": 30
+          }
+        },
+        "text": "Car 88. Current speed 22 mph. Limit here 25 mph.\nNext control: none within 80 m.\nConstruction flagger 30 m ahead in this lane showing a STOP paddle.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "stop_at_line",
+      "acceptableActions": [
+        "stop_at_line",
+        "yield"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "R35",
+      "category": "rule",
+      "title": "Construction flagger shows SLOW 40 m ahead",
+      "sceneText": "Road segment (Oak St E): no traffic control on this segment.",
+      "perception": {
+        "carId": "15",
+        "facts": {
+          "speedMph": 24,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "none",
+            "distanceM": 0
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "flagger": {
+            "command": "slow",
+            "distanceM": 40
+          }
+        },
+        "text": "Car 15. Current speed 24 mph. Limit here 25 mph.\nNext control: none within 80 m.\nConstruction flagger 40 m ahead in this lane showing a SLOW paddle.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "slow_down",
+      "acceptableActions": [
+        "slow_down"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "R36",
+      "category": "rule",
+      "title": "Ambulance 30 m behind in the same lane, open road",
+      "sceneText": "Road segment (Elm St E): no traffic control on this segment.\nActive events: Ambulance with siren on approaching eastbound on Elm St.",
+      "perception": {
+        "carId": "22",
+        "facts": {
+          "speedMph": 24,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "none",
+            "distanceM": 0
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "emergencyVehicleBehindM": 30
+        },
+        "text": "Car 22. Current speed 24 mph. Limit here 25 mph.\nNext control: none within 80 m.\nVehicle ahead: none within 60 m.\nAmbulance with siren on, 30 m behind this car in the same lane and closing."
+      },
+      "expectedAction": "pull_over",
+      "acceptableActions": [
+        "pull_over"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "R37",
+      "category": "rule",
+      "title": "Ambulance about to cross the intersection, light green",
+      "sceneText": "Intersection D (Maple St and Oak St): traffic light.\nSignal: Maple St (north-south) GREEN, changes in about 8 s; Oak St (east-west) RED, changes in about 12 s.\nInside the intersection box: no vehicles.\nActive events: Ambulance with siren on approaching westbound on Oak St.",
+      "perception": {
+        "carId": "29",
+        "facts": {
+          "speedMph": 22,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 28,
+            "lightState": "green",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight",
+          "intersectionClear": true,
+          "emergencyVehicleCrossingM": 35
+        },
+        "text": "Car 29. Current speed 22 mph. Limit here 25 mph.\nNext control: traffic light, stop line 28 m ahead, going straight. Light is GREEN.\nVehicle ahead: none within 60 m.\nAmbulance with siren on, approaching this intersection on another road, 35 m away."
+      },
+      "expectedAction": "yield",
+      "acceptableActions": [
+        "yield",
+        "stop_at_line"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "R38",
+      "category": "rule",
+      "title": "School zone active at 19 mph, nothing ahead",
+      "sceneText": "Road segment (Grand Ave S): no traffic control on this segment.",
+      "perception": {
+        "carId": "36",
+        "facts": {
+          "speedMph": 19,
+          "limitMph": 20,
+          "schoolZoneActive": true,
+          "nextControl": {
+            "kind": "none",
+            "distanceM": 0
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0
+        },
+        "text": "Car 36. Current speed 19 mph. Limit here 20 mph: school zone ACTIVE.\nNext control: none within 80 m.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "proceed",
+      "acceptableActions": [
+        "proceed"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "R39",
+      "category": "rule",
+      "title": "Red light 3 m ahead at 12 mph",
+      "sceneText": "Intersection D (Maple St and Oak St): traffic light.\nSignal: Maple St (north-south) RED, changes in about 8 s; Oak St (east-west) GREEN, changes in about 12 s.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "43",
+        "facts": {
+          "speedMph": 12,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 3,
+            "lightState": "red",
+            "canStopComfortably": false
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight"
+        },
+        "text": "Car 43. Current speed 12 mph. Limit here 25 mph.\nNext control: traffic light, stop line 3 m ahead, going straight. Light is RED.\nComfortable stop before the line: NO.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "stop_at_line",
+      "acceptableActions": [
+        "stop_at_line",
+        "emergency_stop"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "R40",
+      "category": "rule",
+      "title": "Stop sign 60 m ahead at 25 mph",
+      "sceneText": "Intersection B (Maple St and Elm St): all-way stop.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "50",
+        "facts": {
+          "speedMph": 25,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "stop_sign",
+            "distanceM": 60
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "left",
+          "hasStoppedAtLine": false,
+          "intersectionClear": true
+        },
+        "text": "Car 50. Current speed 25 mph. Limit here 25 mph.\nNext control: all-way stop sign, stop line 60 m ahead, turning left.\nFull stop at the line already made: NO.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "stop_at_line",
+      "acceptableActions": [
+        "stop_at_line",
+        "slow_down",
+        "proceed"
+      ],
+      "expectedMustStop": true,
+      "notes": "Far from the line; continuing for now is also reasonable."
+    },
+    {
+      "id": "J01",
+      "category": "judgment",
+      "title": "Ball just rolled across the road 25 m ahead",
+      "sceneText": "Road segment (Elm St E): no traffic control on this segment.",
+      "perception": {
+        "carId": "57",
+        "facts": {
+          "speedMph": 24,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "none",
+            "distanceM": 0
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0
+        },
+        "text": "Car 57. Current speed 24 mph. Limit here 25 mph.\nNext control: none within 80 m.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none.\nA ball rolled across the road 25 m ahead a moment ago, from between parked cars. Nobody has followed it yet."
+      },
+      "expectedAction": "slow_down",
+      "acceptableActions": [
+        "slow_down"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "J02",
+      "category": "judgment",
+      "title": "Ball rolling across the lane 18 m ahead",
+      "sceneText": "Road segment (Oak St W): no traffic control on this segment.",
+      "perception": {
+        "carId": "64",
+        "facts": {
+          "speedMph": 23,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "none",
+            "distanceM": 0
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "obstacleInPathM": 18,
+          "obstacleKind": "object",
+          "obstacleStopped": false
+        },
+        "text": "Car 64. Current speed 23 mph. Limit here 25 mph.\nNext control: none within 80 m.\nObject in this lane 18 m ahead.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none.\nA ball is rolling across the road 18 m ahead; it came out from between parked cars."
+      },
+      "expectedAction": "slow_down",
+      "acceptableActions": [
+        "slow_down",
+        "emergency_stop",
+        "stop_at_line",
+        "yield"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "J03",
+      "category": "judgment",
+      "title": "Ball rolled across 45 m ahead, car at 25 mph",
+      "sceneText": "Road segment (Maple St S): no traffic control on this segment.",
+      "perception": {
+        "carId": "71",
+        "facts": {
+          "speedMph": 25,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "none",
+            "distanceM": 0
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0
+        },
+        "text": "Car 71. Current speed 25 mph. Limit here 25 mph.\nNext control: none within 80 m.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none.\nA ball rolled across the road 45 m ahead a moment ago, from between parked cars. Nobody has followed it yet."
+      },
+      "expectedAction": "slow_down",
+      "acceptableActions": [
+        "slow_down"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "J04",
+      "category": "judgment",
+      "title": "Child runs into the road after a ball 12 m ahead",
+      "sceneText": "Road segment (Elm St W): no traffic control on this segment.",
+      "perception": {
+        "carId": "78",
+        "facts": {
+          "speedMph": 22,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "none",
+            "distanceM": 0
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "obstacleInPathM": 12,
+          "obstacleKind": "object",
+          "obstacleStopped": false
+        },
+        "text": "Car 78. Current speed 22 mph. Limit here 25 mph.\nNext control: none within 80 m.\nObject in this lane 12 m ahead.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none.\nA child is running into the road after a ball, 12 m ahead in this lane."
+      },
+      "expectedAction": "emergency_stop",
+      "acceptableActions": [
+        "emergency_stop"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "J05",
+      "category": "judgment",
+      "title": "Distracted pedestrian at the right curb 30 m ahead",
+      "sceneText": "Road segment (Oak St E): no traffic control on this segment.",
+      "perception": {
+        "carId": "85",
+        "facts": {
+          "speedMph": 24,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "none",
+            "distanceM": 0
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 1
+        },
+        "text": "Car 85. Current speed 24 mph. Limit here 25 mph.\nNext control: none within 80 m.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none.\nA pedestrian is standing at the right curb 30 m ahead, facing the road and looking at a phone. There is no crosswalk here and no walk signal."
+      },
+      "expectedAction": "slow_down",
+      "acceptableActions": [
+        "slow_down"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "J06",
+      "category": "judgment",
+      "title": "Distracted pedestrian at the right curb 12 m ahead",
+      "sceneText": "Road segment (Elm St E): no traffic control on this segment.",
+      "perception": {
+        "carId": "12",
+        "facts": {
+          "speedMph": 20,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "none",
+            "distanceM": 0
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 1
+        },
+        "text": "Car 12. Current speed 20 mph. Limit here 25 mph.\nNext control: none within 80 m.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none.\nA pedestrian is standing at the right curb 12 m ahead, facing the road and looking at a phone. There is no crosswalk here and no walk signal."
+      },
+      "expectedAction": "slow_down",
+      "acceptableActions": [
+        "slow_down",
+        "yield"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "J07",
+      "category": "judgment",
+      "title": "Distracted pedestrian at the left curb, far side, 35 m",
+      "sceneText": "Road segment (Maple St N): no traffic control on this segment.",
+      "perception": {
+        "carId": "19",
+        "facts": {
+          "speedMph": 25,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "none",
+            "distanceM": 0
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 1
+        },
+        "text": "Car 19. Current speed 25 mph. Limit here 25 mph.\nNext control: none within 80 m.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none.\nA pedestrian is standing at the left curb 35 m ahead, facing the road and looking at a phone. There is no crosswalk here and no walk signal."
+      },
+      "expectedAction": "slow_down",
+      "acceptableActions": [
+        "slow_down"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "J08",
+      "category": "judgment",
+      "title": "Children at the curb by the crosswalk, one stepping toward the road",
+      "sceneText": "Intersection C (Grand Ave and Oak St): traffic light with crosswalks.\nSignal: Grand Ave (north-south) GREEN, changes in about 8 s; Oak St (east-west) RED, changes in about 12 s.\nSchool zone ACTIVE: 20 mph.\nInside the intersection box: no vehicles.\nActive events: School dismissal: children are at the crosswalks.",
+      "perception": {
+        "carId": "26",
+        "facts": {
+          "speedMph": 19,
+          "limitMph": 20,
+          "schoolZoneActive": true,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 30,
+            "lightState": "green",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 3,
+          "turn": "straight",
+          "crosswalkAheadM": 33,
+          "intersectionClear": true
+        },
+        "text": "Car 26. Current speed 19 mph. Limit here 20 mph: school zone ACTIVE, children present.\nNext control: traffic light, stop line 30 m ahead, going straight. Light is GREEN.\nCrosswalk 33 m ahead (just past the stop line): 3 waiting at the curb; 3 of them are children, one stepping toward the road.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "slow_down",
+      "acceptableActions": [
+        "slow_down",
+        "yield"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "J09",
+      "category": "judgment",
+      "title": "Children crossing in the crosswalk ahead, school zone",
+      "sceneText": "Intersection C (Grand Ave and Oak St): traffic light with crosswalks.\nSignal: Grand Ave (north-south) RED, changes in about 8 s; Oak St (east-west) GREEN, changes in about 12 s.\nSchool zone ACTIVE: 20 mph.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "33",
+        "facts": {
+          "speedMph": 12,
+          "limitMph": 20,
+          "schoolZoneActive": true,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 10,
+            "lightState": "green",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 2,
+          "pedestriansAtCurb": 0,
+          "turn": "right",
+          "crosswalkAheadM": 18,
+          "intersectionClear": true
+        },
+        "text": "Car 33. Current speed 12 mph. Limit here 20 mph: school zone ACTIVE, children present.\nNext control: traffic light, stop line 10 m ahead, turning right. Light is GREEN.\nCrosswalk 18 m ahead (on the far side of the intersection): 2 people in it; 2 of them are children.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "yield",
+      "acceptableActions": [
+        "yield",
+        "stop_at_line",
+        "slow_down"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "J10",
+      "category": "judgment",
+      "title": "School zone active, children near the curb, no crosswalk use yet",
+      "sceneText": "Intersection C (Grand Ave and Oak St): traffic light with crosswalks.\nSignal: Grand Ave (north-south) GREEN, changes in about 8 s; Oak St (east-west) RED, changes in about 12 s.\nSchool zone ACTIVE: 20 mph.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "40",
+        "facts": {
+          "speedMph": 20,
+          "limitMph": 20,
+          "schoolZoneActive": true,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 42,
+            "lightState": "green",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 2,
+          "crosswalkAheadM": 45,
+          "turn": "straight",
+          "intersectionClear": true
+        },
+        "text": "Car 40. Current speed 20 mph. Limit here 20 mph: school zone ACTIVE, children present.\nNext control: traffic light, stop line 42 m ahead, going straight. Light is GREEN.\nCrosswalk 45 m ahead (just past the stop line): 2 waiting at the curb; 2 of them are children.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "slow_down",
+      "acceptableActions": [
+        "slow_down"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "J11",
+      "category": "judgment",
+      "title": "Ambulance behind while waiting at a red light",
+      "sceneText": "Intersection A (Grand Ave and Elm St): traffic light with crosswalks.\nSignal: Grand Ave (north-south) RED, changes in about 8 s; Elm St (east-west) GREEN, changes in about 12 s.\nInside the intersection box: no vehicles.\nActive events: Ambulance with siren on approaching northbound on Grand Ave.",
+      "perception": {
+        "carId": "47",
+        "facts": {
+          "speedMph": 0,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 1,
+            "lightState": "red",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight",
+          "emergencyVehicleBehindM": 20
+        },
+        "text": "Car 47. Current speed 0 mph. Limit here 25 mph.\nNext control: traffic light, stop line 1 m ahead, going straight. Light is RED.\nComfortable stop before the line: YES.\nVehicle ahead: none within 60 m. Vehicle behind: 4 m back, 0 mph.\nAmbulance with siren on, 20 m behind this car in the same lane and closing."
+      },
+      "expectedAction": "pull_over",
+      "acceptableActions": [
+        "pull_over",
+        "stop_at_line",
+        "yield"
+      ],
+      "expectedMustStop": true,
+      "notes": "At a red with cars around, staying put (not entering the box) is acceptable."
+    },
+    {
+      "id": "J12",
+      "category": "judgment",
+      "title": "Ambulance 25 m behind approaching a green light",
+      "sceneText": "Intersection D (Maple St and Oak St): traffic light.\nSignal: Maple St (north-south) GREEN, changes in about 8 s; Oak St (east-west) RED, changes in about 12 s.\nInside the intersection box: no vehicles.\nActive events: Ambulance with siren on approaching southbound on Maple St.",
+      "perception": {
+        "carId": "54",
+        "facts": {
+          "speedMph": 22,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 30,
+            "lightState": "green",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight",
+          "intersectionClear": true,
+          "emergencyVehicleBehindM": 25
+        },
+        "text": "Car 54. Current speed 22 mph. Limit here 25 mph.\nNext control: traffic light, stop line 30 m ahead, going straight. Light is GREEN.\nVehicle ahead: none within 60 m.\nAmbulance with siren on, 25 m behind this car in the same lane and closing."
+      },
+      "expectedAction": "pull_over",
+      "acceptableActions": [
+        "pull_over",
+        "yield",
+        "stop_at_line"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "J13",
+      "category": "judgment",
+      "title": "Ambulance behind while inside the intersection",
+      "sceneText": "Intersection A (Grand Ave and Elm St): traffic light with crosswalks.\nSignal: Grand Ave (north-south) GREEN, changes in about 8 s; Elm St (east-west) RED, changes in about 12 s.\nInside the intersection box: no vehicles.\nActive events: Ambulance with siren on approaching northbound on Grand Ave.",
+      "perception": {
+        "carId": "61",
+        "facts": {
+          "speedMph": 14,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "none",
+            "distanceM": 0
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "inIntersection": true,
+          "turn": "straight",
+          "intersectionClear": true,
+          "emergencyVehicleBehindM": 15
+        },
+        "text": "Car 61. Current speed 14 mph. Limit here 25 mph.\nThis car is inside the intersection box now, going straight; it has already crossed the stop line.\nCrossing traffic inside the intersection box: none.\nVehicle ahead: none within 60 m.\nAmbulance with siren on, 15 m behind this car in the same lane and closing."
+      },
+      "expectedAction": "proceed",
+      "acceptableActions": [
+        "proceed",
+        "pull_over"
+      ],
+      "expectedMustStop": false,
+      "notes": "Clear the box first, then pull over."
+    },
+    {
+      "id": "J14",
+      "category": "judgment",
+      "title": "Ambulance crossing on the other road, this car has a green",
+      "sceneText": "Intersection C (Grand Ave and Oak St): traffic light with crosswalks.\nSignal: Grand Ave (north-south) GREEN, changes in about 8 s; Oak St (east-west) RED, changes in about 12 s.\nInside the intersection box: no vehicles.\nActive events: Ambulance with siren on approaching eastbound on Oak St.",
+      "perception": {
+        "carId": "68",
+        "facts": {
+          "speedMph": 25,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 40,
+            "lightState": "green",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight",
+          "intersectionClear": true,
+          "emergencyVehicleCrossingM": 45
+        },
+        "text": "Car 68. Current speed 25 mph. Limit here 25 mph.\nNext control: traffic light, stop line 40 m ahead, going straight. Light is GREEN.\nVehicle ahead: none within 60 m.\nAmbulance with siren on, approaching this intersection on another road, 45 m away."
+      },
+      "expectedAction": "yield",
+      "acceptableActions": [
+        "yield",
+        "stop_at_line",
+        "slow_down"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "J15",
+      "category": "judgment",
+      "title": "Stalled car 10 m ahead, oncoming lane clear",
+      "sceneText": "Road segment (Maple St S): no traffic control on this segment.",
+      "perception": {
+        "carId": "75",
+        "facts": {
+          "speedMph": 0,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "none",
+            "distanceM": 0
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "obstacleInPathM": 10,
+          "obstacleKind": "stalled_car",
+          "obstacleStopped": true,
+          "canPassObstacle": true
+        },
+        "text": "Car 75. Current speed 0 mph. Limit here 25 mph.\nNext control: none within 80 m.\nStalled car with hazard lights on, stopped in this lane 10 m ahead. Oncoming lane clear to go around it: YES.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "proceed",
+      "acceptableActions": [
+        "proceed"
+      ],
+      "expectedMustStop": false,
+      "notes": "Go around carefully."
+    },
+    {
+      "id": "J16",
+      "category": "judgment",
+      "title": "Stalled car 10 m ahead, oncoming traffic",
+      "sceneText": "Road segment (Maple St S): no traffic control on this segment.",
+      "perception": {
+        "carId": "82",
+        "facts": {
+          "speedMph": 0,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "none",
+            "distanceM": 0
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "obstacleInPathM": 10,
+          "obstacleKind": "stalled_car",
+          "obstacleStopped": true,
+          "canPassObstacle": false
+        },
+        "text": "Car 82. Current speed 0 mph. Limit here 25 mph.\nNext control: none within 80 m.\nStalled car with hazard lights on, stopped in this lane 10 m ahead. Oncoming lane clear to go around it: NO.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "yield",
+      "acceptableActions": [
+        "yield",
+        "stop_at_line"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "J17",
+      "category": "judgment",
+      "title": "Stalled car 45 m ahead, approaching at 25 mph",
+      "sceneText": "Road segment (Elm St E): no traffic control on this segment.",
+      "perception": {
+        "carId": "89",
+        "facts": {
+          "speedMph": 25,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "none",
+            "distanceM": 0
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "obstacleInPathM": 45,
+          "obstacleKind": "stalled_car",
+          "obstacleStopped": true,
+          "canPassObstacle": false
+        },
+        "text": "Car 89. Current speed 25 mph. Limit here 25 mph.\nNext control: none within 80 m.\nStalled car with hazard lights on, stopped in this lane 45 m ahead. Oncoming lane clear to go around it: NO.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "slow_down",
+      "acceptableActions": [
+        "slow_down",
+        "yield"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "J18",
+      "category": "judgment",
+      "title": "Stalled car 20 m ahead, oncoming clear, car slowing",
+      "sceneText": "Road segment (Oak St E): no traffic control on this segment.",
+      "perception": {
+        "carId": "16",
+        "facts": {
+          "speedMph": 8,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "none",
+            "distanceM": 0
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "obstacleInPathM": 20,
+          "obstacleKind": "stalled_car",
+          "obstacleStopped": true,
+          "canPassObstacle": true
+        },
+        "text": "Car 16. Current speed 8 mph. Limit here 25 mph.\nNext control: none within 80 m.\nStalled car with hazard lights on, stopped in this lane 20 m ahead. Oncoming lane clear to go around it: YES.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "slow_down",
+      "acceptableActions": [
+        "slow_down",
+        "proceed",
+        "yield"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "J19",
+      "category": "judgment",
+      "title": "Officer waves the lane through a red, crossing car still in the box",
+      "sceneText": "Intersection C (Grand Ave and Oak St): traffic light with crosswalks.\nSignal: Grand Ave (north-south) GREEN, changes in about 8 s; Oak St (east-west) RED, changes in about 12 s.\nInside the intersection box: car 81 (northbound, going straight).\nActive events: Police officer in the intersection, holding Grand Ave (green) and waving Oak St through its red.",
+      "perception": {
+        "carId": "23",
+        "facts": {
+          "speedMph": 0,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 1,
+            "lightState": "red",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight",
+          "officerCommand": "go",
+          "intersectionClear": false
+        },
+        "text": "Car 23. Current speed 0 mph. Limit here 25 mph.\nNext control: traffic light, stop line 1 m ahead, going straight. Light is RED.\nComfortable stop before the line: YES.\nPolice officer in the intersection is waving this lane through; the officer overrides the signal.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "yield",
+      "acceptableActions": [
+        "yield",
+        "stop_at_line"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "J20",
+      "category": "judgment",
+      "title": "Officer holds the lane while the light turns green",
+      "sceneText": "Intersection D (Maple St and Oak St): traffic light.\nSignal: Maple St (north-south) GREEN, changes in about 8 s; Oak St (east-west) RED, changes in about 12 s.\nInside the intersection box: no vehicles.\nActive events: Police officer in the intersection, holding Maple St (green) and waving Oak St through its red.",
+      "perception": {
+        "carId": "30",
+        "facts": {
+          "speedMph": 0,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 1,
+            "lightState": "green",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "left",
+          "officerCommand": "stop",
+          "intersectionClear": true
+        },
+        "text": "Car 30. Current speed 0 mph. Limit here 25 mph.\nNext control: traffic light, stop line 1 m ahead, turning left. Light is GREEN.\nPolice officer in the intersection is holding this lane with a raised hand; the officer overrides the signal.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "stop_at_line",
+      "acceptableActions": [
+        "stop_at_line",
+        "yield"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "J21",
+      "category": "judgment",
+      "title": "Signal failed, stopped, arrived second, earlier car crosses",
+      "sceneText": "Intersection D (Maple St and Oak St): traffic signal FAILED, flashing red on all approaches: all-way stop.\nInside the intersection box: no vehicles.\nAll-way stop arrival order: car 27 (from the west), then car 64 (from the north).",
+      "perception": {
+        "carId": "37",
+        "facts": {
+          "speedMph": 0,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 1,
+            "lightState": "flashing_red",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight",
+          "hasStoppedAtLine": true,
+          "arrivalRankAtStop": 2,
+          "earlierConflictingCars": 1,
+          "intersectionClear": true
+        },
+        "text": "Car 37. Current speed 0 mph. Limit here 25 mph.\nNext control: traffic signal, stop line 1 m ahead, going straight. The signal has FAILED and is FLASHING RED: it works as an all-way stop.\nFull stop at the line already made: YES.\nArrival order: this car arrived 2nd of 2 waiting cars. Earlier arrivals crossing this car's path: 1 (car 27 from the west).\nCrossing traffic inside the intersection box: none.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "yield",
+      "acceptableActions": [
+        "yield",
+        "stop_at_line"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "J22",
+      "category": "judgment",
+      "title": "Signal failed, approaching at 25 mph",
+      "sceneText": "Intersection D (Maple St and Oak St): traffic signal FAILED, flashing red on all approaches: all-way stop.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "44",
+        "facts": {
+          "speedMph": 25,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 40,
+            "lightState": "flashing_red",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight",
+          "hasStoppedAtLine": false,
+          "intersectionClear": true
+        },
+        "text": "Car 44. Current speed 25 mph. Limit here 25 mph.\nNext control: traffic signal, stop line 40 m ahead, going straight. The signal has FAILED and is FLASHING RED: it works as an all-way stop.\nFull stop at the line already made: NO.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "stop_at_line",
+      "acceptableActions": [
+        "stop_at_line",
+        "slow_down"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "J23",
+      "category": "judgment",
+      "title": "Yellow dilemma: comfortable stop barely possible",
+      "sceneText": "Intersection D (Maple St and Oak St): traffic light.\nSignal: Maple St (north-south) YELLOW, changes in about 3 s; Oak St (east-west) RED, changes in about 12 s.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "51",
+        "facts": {
+          "speedMph": 25,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 21,
+            "lightState": "yellow",
+            "secondsToRed": 3.5,
+            "canStopComfortably": true,
+            "willClearBeforeRed": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight"
+        },
+        "text": "Car 51. Current speed 25 mph. Limit here 25 mph.\nNext control: traffic light, stop line 21 m ahead, going straight. Light is YELLOW and turns red in about 3.5 s.\nAt current speed this car reaches the stop line in 1.9 s, so it WILL clear before red.\nComfortable stop before the line: YES.\nVehicle ahead: none within 60 m. Vehicle behind: 25 m back, 25 mph.\nEmergency vehicles: none."
+      },
+      "expectedAction": "stop_at_line",
+      "acceptableActions": [
+        "stop_at_line"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "J24",
+      "category": "judgment",
+      "title": "Yellow dilemma: comfortable stop just not possible",
+      "sceneText": "Intersection D (Maple St and Oak St): traffic light.\nSignal: Maple St (north-south) YELLOW, changes in about 3 s; Oak St (east-west) RED, changes in about 12 s.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "58",
+        "facts": {
+          "speedMph": 25,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 14,
+            "lightState": "yellow",
+            "secondsToRed": 3.5,
+            "canStopComfortably": false,
+            "willClearBeforeRed": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight"
+        },
+        "text": "Car 58. Current speed 25 mph. Limit here 25 mph.\nNext control: traffic light, stop line 14 m ahead, going straight. Light is YELLOW and turns red in about 3.5 s.\nAt current speed this car reaches the stop line in 1.3 s, so it WILL clear before red.\nComfortable stop before the line: NO.\nVehicle ahead: none within 60 m. Vehicle behind: 12 m back, 25 mph.\nEmergency vehicles: none."
+      },
+      "expectedAction": "proceed",
+      "acceptableActions": [
+        "proceed"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "J25",
+      "category": "judgment",
+      "title": "Yellow on the arterial, 33 m at 35 mph",
+      "sceneText": "Intersection A (Grand Ave and Elm St): traffic light with crosswalks.\nSignal: Grand Ave (north-south) YELLOW, changes in about 4 s; Elm St (east-west) RED, changes in about 12 s.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "65",
+        "facts": {
+          "speedMph": 35,
+          "limitMph": 35,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 33,
+            "lightState": "yellow",
+            "secondsToRed": 4,
+            "canStopComfortably": false,
+            "willClearBeforeRed": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight"
+        },
+        "text": "Car 65. Current speed 35 mph. Limit here 35 mph.\nNext control: traffic light, stop line 33 m ahead, going straight. Light is YELLOW and turns red in about 4 s.\nAt current speed this car reaches the stop line in 2.1 s, so it WILL clear before red.\nComfortable stop before the line: NO.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "proceed",
+      "acceptableActions": [
+        "proceed"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "J26",
+      "category": "judgment",
+      "title": "Yellow on the arterial, 40 m at 35 mph",
+      "sceneText": "Intersection A (Grand Ave and Elm St): traffic light with crosswalks.\nSignal: Grand Ave (north-south) YELLOW, changes in about 4 s; Elm St (east-west) RED, changes in about 12 s.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "72",
+        "facts": {
+          "speedMph": 35,
+          "limitMph": 35,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 40,
+            "lightState": "yellow",
+            "secondsToRed": 4,
+            "canStopComfortably": true,
+            "willClearBeforeRed": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight"
+        },
+        "text": "Car 72. Current speed 35 mph. Limit here 35 mph.\nNext control: traffic light, stop line 40 m ahead, going straight. Light is YELLOW and turns red in about 4 s.\nAt current speed this car reaches the stop line in 2.6 s, so it WILL clear before red.\nComfortable stop before the line: YES.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "stop_at_line",
+      "acceptableActions": [
+        "stop_at_line"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "J27",
+      "category": "judgment",
+      "title": "Flagger shows STOP 12 m ahead while the light beyond is green",
+      "sceneText": "Road segment (Elm St W): no traffic control on this segment.",
+      "perception": {
+        "carId": "79",
+        "facts": {
+          "speedMph": 14,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 70,
+            "lightState": "green",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "flagger": {
+            "command": "stop",
+            "distanceM": 12
+          },
+          "turn": "straight"
+        },
+        "text": "Car 79. Current speed 14 mph. Limit here 25 mph.\nNext control: traffic light, stop line 70 m ahead, going straight. Light is GREEN.\nConstruction flagger 12 m ahead in this lane showing a STOP paddle.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "stop_at_line",
+      "acceptableActions": [
+        "stop_at_line",
+        "yield",
+        "emergency_stop"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "J28",
+      "category": "judgment",
+      "title": "Flagger switches to SLOW while this car waits",
+      "sceneText": "Road segment (Oak St E): no traffic control on this segment.",
+      "perception": {
+        "carId": "86",
+        "facts": {
+          "speedMph": 0,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "none",
+            "distanceM": 0
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "flagger": {
+            "command": "slow",
+            "distanceM": 3
+          }
+        },
+        "text": "Car 86. Current speed 0 mph. Limit here 25 mph.\nNext control: none within 80 m.\nConstruction flagger 3 m ahead in this lane showing a SLOW paddle.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "slow_down",
+      "acceptableActions": [
+        "slow_down",
+        "proceed"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "J29",
+      "category": "judgment",
+      "title": "Object lying in the lane 35 m ahead",
+      "sceneText": "Road segment (Maple St N): no traffic control on this segment.",
+      "perception": {
+        "carId": "13",
+        "facts": {
+          "speedMph": 25,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "none",
+            "distanceM": 0
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "obstacleInPathM": 35,
+          "obstacleKind": "object",
+          "obstacleStopped": true
+        },
+        "text": "Car 13. Current speed 25 mph. Limit here 25 mph.\nNext control: none within 80 m.\nObject in this lane 35 m ahead.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none.\nA cardboard box is lying in this lane 35 m ahead."
+      },
+      "expectedAction": "slow_down",
+      "acceptableActions": [
+        "slow_down",
+        "yield"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "J30",
+      "category": "judgment",
+      "title": "Pedestrian waiting at the crosswalk, DON'T WALK, car turning right",
+      "sceneText": "Intersection C (Grand Ave and Oak St): traffic light with crosswalks.\nSignal: Grand Ave (north-south) GREEN, changes in about 8 s; Oak St (east-west) RED, changes in about 12 s.\nPedestrian signals: crossing Grand Ave: DON'T WALK; crossing Oak St: DON'T WALK.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "20",
+        "facts": {
+          "speedMph": 10,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 8,
+            "lightState": "green",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 1,
+          "turn": "right",
+          "crosswalkAheadM": 22,
+          "intersectionClear": true
+        },
+        "text": "Car 20. Current speed 10 mph. Limit here 25 mph.\nNext control: traffic light, stop line 8 m ahead, turning right. Light is GREEN.\nCrosswalk 22 m ahead (just past the turn): 1 waiting at the curb.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "slow_down",
+      "acceptableActions": [
+        "slow_down",
+        "proceed"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "J31",
+      "category": "judgment",
+      "title": "Vehicle ahead stopped suddenly 10 m ahead at 25 mph",
+      "sceneText": "Road segment (Elm St E): no traffic control on this segment.",
+      "perception": {
+        "carId": "27",
+        "facts": {
+          "speedMph": 25,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "none",
+            "distanceM": 0
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "leadVehicle": {
+            "distanceM": 10,
+            "speedMph": 0,
+            "stopped": true
+          }
+        },
+        "text": "Car 27. Current speed 25 mph. Limit here 25 mph.\nNext control: none within 80 m.\nVehicle ahead: 10 m, 0 mph, stopped.\nEmergency vehicles: none."
+      },
+      "expectedAction": "emergency_stop",
+      "acceptableActions": [
+        "emergency_stop",
+        "slow_down"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "J32",
+      "category": "judgment",
+      "title": "Children gathered at the curb, school zone, car at 20 mph",
+      "sceneText": "Intersection C (Grand Ave and Oak St): traffic light with crosswalks.\nSignal: Grand Ave (north-south) GREEN, changes in about 8 s; Oak St (east-west) RED, changes in about 12 s.\nSchool zone ACTIVE: 20 mph.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "34",
+        "facts": {
+          "speedMph": 20,
+          "limitMph": 20,
+          "schoolZoneActive": true,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 16,
+            "lightState": "green",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 4,
+          "crosswalkAheadM": 20,
+          "turn": "straight",
+          "intersectionClear": true
+        },
+        "text": "Car 34. Current speed 20 mph. Limit here 20 mph: school zone ACTIVE, children present.\nNext control: traffic light, stop line 16 m ahead, going straight. Light is GREEN.\nCrosswalk 20 m ahead (just past the stop line): 4 waiting at the curb; 4 of them are children, one stepping toward the road.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "slow_down",
+      "acceptableActions": [
+        "slow_down",
+        "yield"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "J33",
+      "category": "judgment",
+      "title": "Ball in the road near a school crosswalk",
+      "sceneText": "Road segment (Oak St W): no traffic control on this segment.\nActive events: School dismissal: children are at the crosswalks.",
+      "perception": {
+        "carId": "41",
+        "facts": {
+          "speedMph": 18,
+          "limitMph": 20,
+          "schoolZoneActive": true,
+          "nextControl": {
+            "kind": "none",
+            "distanceM": 0
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "obstacleInPathM": 15,
+          "obstacleKind": "object",
+          "obstacleStopped": false
+        },
+        "text": "Car 41. Current speed 18 mph. Limit here 20 mph: school zone ACTIVE, children present.\nNext control: none within 80 m.\nObject in this lane 15 m ahead.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none.\nA ball is rolling across the road 15 m ahead; it came out from between parked cars."
+      },
+      "expectedAction": "slow_down",
+      "acceptableActions": [
+        "slow_down",
+        "emergency_stop",
+        "yield"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "J34",
+      "category": "judgment",
+      "title": "Ambulance 60 m behind, car approaching a red light",
+      "sceneText": "Intersection D (Maple St and Oak St): traffic light.\nSignal: Maple St (north-south) RED, changes in about 8 s; Oak St (east-west) GREEN, changes in about 12 s.\nInside the intersection box: no vehicles.\nActive events: Ambulance with siren on approaching southbound on Maple St.",
+      "perception": {
+        "carId": "48",
+        "facts": {
+          "speedMph": 18,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 25,
+            "lightState": "red",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight",
+          "emergencyVehicleBehindM": 60
+        },
+        "text": "Car 48. Current speed 18 mph. Limit here 25 mph.\nNext control: traffic light, stop line 25 m ahead, going straight. Light is RED.\nComfortable stop before the line: YES.\nVehicle ahead: none within 60 m.\nAmbulance with siren on, 60 m behind this car in the same lane and closing."
+      },
+      "expectedAction": "pull_over",
+      "acceptableActions": [
+        "pull_over",
+        "stop_at_line"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "J35",
+      "category": "judgment",
+      "title": "Distracted pedestrian beside a green light approach",
+      "sceneText": "Intersection D (Maple St and Oak St): traffic light.\nSignal: Maple St (north-south) GREEN, changes in about 8 s; Oak St (east-west) RED, changes in about 12 s.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "55",
+        "facts": {
+          "speedMph": 24,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 50,
+            "lightState": "green",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 1,
+          "turn": "straight",
+          "intersectionClear": true
+        },
+        "text": "Car 55. Current speed 24 mph. Limit here 25 mph.\nNext control: traffic light, stop line 50 m ahead, going straight. Light is GREEN.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none.\nA pedestrian is standing at the right curb 20 m ahead, facing the road and looking at a phone. There is no crosswalk here and no walk signal."
+      },
+      "expectedAction": "slow_down",
+      "acceptableActions": [
+        "slow_down"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "J36",
+      "category": "judgment",
+      "title": "Officer waves through a red, turning left, oncoming also waved",
+      "sceneText": "Intersection A (Grand Ave and Elm St): traffic light with crosswalks.\nSignal: Grand Ave (north-south) RED, changes in about 8 s; Elm St (east-west) GREEN, changes in about 12 s.\nInside the intersection box: no vehicles.\nActive events: Police officer in the intersection, holding Elm St (green) and waving Grand Ave through its red.",
+      "perception": {
+        "carId": "62",
+        "facts": {
+          "speedMph": 0,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 1,
+            "lightState": "red",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "left",
+          "officerCommand": "go",
+          "intersectionClear": true,
+          "oncomingGapSafe": false
+        },
+        "text": "Car 62. Current speed 0 mph. Limit here 25 mph.\nNext control: traffic light, stop line 1 m ahead, turning left. Light is RED.\nComfortable stop before the line: YES.\nPolice officer in the intersection is waving this lane through; the officer overrides the signal.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "yield",
+      "acceptableActions": [
+        "yield",
+        "stop_at_line"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "J37",
+      "category": "judgment",
+      "title": "Children leave the crosswalk; light green; one child still at the far curb",
+      "sceneText": "Intersection C (Grand Ave and Oak St): traffic light with crosswalks.\nSignal: Grand Ave (north-south) GREEN, changes in about 8 s; Oak St (east-west) RED, changes in about 12 s.\nSchool zone ACTIVE: 20 mph.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "69",
+        "facts": {
+          "speedMph": 5,
+          "limitMph": 20,
+          "schoolZoneActive": true,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 3,
+            "lightState": "green",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 1,
+          "turn": "straight",
+          "crosswalkAheadM": 5,
+          "intersectionClear": true
+        },
+        "text": "Car 69. Current speed 5 mph. Limit here 20 mph: school zone ACTIVE, children present.\nNext control: traffic light, stop line 3 m ahead, going straight. Light is GREEN.\nCrosswalk 5 m ahead (just past the stop line): 1 waiting at the curb; 1 of them are children.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "slow_down",
+      "acceptableActions": [
+        "slow_down",
+        "proceed"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "J38",
+      "category": "judgment",
+      "title": "Stalled car just before the intersection, oncoming clear",
+      "sceneText": "Intersection D (Maple St and Oak St): traffic light.\nSignal: Maple St (north-south) GREEN, changes in about 8 s; Oak St (east-west) RED, changes in about 12 s.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "76",
+        "facts": {
+          "speedMph": 0,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 20,
+            "lightState": "green",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "obstacleInPathM": 8,
+          "obstacleKind": "stalled_car",
+          "obstacleStopped": true,
+          "canPassObstacle": false,
+          "turn": "straight"
+        },
+        "text": "Car 76. Current speed 0 mph. Limit here 25 mph.\nNext control: traffic light, stop line 20 m ahead, going straight. Light is GREEN.\nStalled car with hazard lights on, stopped in this lane 8 m ahead. Oncoming lane clear to go around it: NO.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "yield",
+      "acceptableActions": [
+        "yield",
+        "stop_at_line"
+      ],
+      "expectedMustStop": false,
+      "notes": "Too close to the intersection to swing out."
+    },
+    {
+      "id": "J39",
+      "category": "judgment",
+      "title": "Ambulance siren behind, car stopped at stop sign with the right of way",
+      "sceneText": "Intersection B (Maple St and Elm St): all-way stop.\nInside the intersection box: no vehicles.\nActive events: Ambulance with siren on approaching westbound on Elm St.",
+      "perception": {
+        "carId": "83",
+        "facts": {
+          "speedMph": 0,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "stop_sign",
+            "distanceM": 1
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight",
+          "hasStoppedAtLine": true,
+          "arrivalRankAtStop": 1,
+          "earlierConflictingCars": 0,
+          "intersectionClear": true,
+          "emergencyVehicleBehindM": 18
+        },
+        "text": "Car 83. Current speed 0 mph. Limit here 25 mph.\nNext control: all-way stop sign, stop line 1 m ahead, going straight.\nFull stop at the line already made: YES.\nArrival order: this car arrived 1st. No earlier arrival crosses this car's path.\nCrossing traffic inside the intersection box: none.\nVehicle ahead: none within 60 m.\nAmbulance with siren on, 18 m behind this car in the same lane and closing."
+      },
+      "expectedAction": "pull_over",
+      "acceptableActions": [
+        "pull_over",
+        "yield",
+        "stop_at_line",
+        "proceed"
+      ],
+      "expectedMustStop": true,
+      "notes": "Proceeding to clear the way is defensible; staying put or pulling over also."
+    },
+    {
+      "id": "J40",
+      "category": "judgment",
+      "title": "Ball rolled across, car stopped at a red light nearby",
+      "sceneText": "Intersection D (Maple St and Oak St): traffic light.\nSignal: Maple St (north-south) RED, changes in about 8 s; Oak St (east-west) GREEN, changes in about 12 s.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "10",
+        "facts": {
+          "speedMph": 0,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 1,
+            "lightState": "red",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight"
+        },
+        "text": "Car 10. Current speed 0 mph. Limit here 25 mph.\nNext control: traffic light, stop line 1 m ahead, going straight. Light is RED.\nComfortable stop before the line: YES.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none.\nA ball rolled across the road 10 m ahead a moment ago, from between parked cars. Nobody has followed it yet."
+      },
+      "expectedAction": "stop_at_line",
+      "acceptableActions": [
+        "stop_at_line",
+        "yield"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "A01",
+      "category": "ambiguous",
+      "title": "Green light, pedestrian waiting at the curb on WALK",
+      "sceneText": "Intersection C (Grand Ave and Oak St): traffic light with crosswalks.\nSignal: Grand Ave (north-south) GREEN, changes in about 8 s; Oak St (east-west) RED, changes in about 12 s.\nPedestrian signals: crossing Grand Ave: DON'T WALK; crossing Oak St: WALK.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "17",
+        "facts": {
+          "speedMph": 18,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 20,
+            "lightState": "green",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 1,
+          "turn": "straight",
+          "crosswalkAheadM": 24,
+          "intersectionClear": true
+        },
+        "text": "Car 17. Current speed 18 mph. Limit here 25 mph.\nNext control: traffic light, stop line 20 m ahead, going straight. Light is GREEN.\nCrosswalk 24 m ahead (just past the stop line): 1 waiting at the curb.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "slow_down",
+      "acceptableActions": [
+        "slow_down",
+        "proceed"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "A02",
+      "category": "ambiguous",
+      "title": "Yellow exactly at the comfortable stopping distance",
+      "sceneText": "Intersection D (Maple St and Oak St): traffic light.\nSignal: Maple St (north-south) YELLOW, changes in about 3 s; Oak St (east-west) RED, changes in about 12 s.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "24",
+        "facts": {
+          "speedMph": 25,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 22,
+            "lightState": "yellow",
+            "secondsToRed": 3.2,
+            "canStopComfortably": true,
+            "willClearBeforeRed": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight"
+        },
+        "text": "Car 24. Current speed 25 mph. Limit here 25 mph.\nNext control: traffic light, stop line 22 m ahead, going straight. Light is YELLOW and turns red in about 3.2 s.\nAt current speed this car reaches the stop line in 2 s, so it WILL clear before red.\nComfortable stop before the line: YES.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "stop_at_line",
+      "acceptableActions": [
+        "stop_at_line",
+        "proceed"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "A03",
+      "category": "ambiguous",
+      "title": "Stale green, 25 m ahead, turns red in 5 s",
+      "sceneText": "Intersection D (Maple St and Oak St): traffic light.\nSignal: Maple St (north-south) GREEN, changes in about 2 s; Oak St (east-west) RED, changes in about 12 s.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "31",
+        "facts": {
+          "speedMph": 25,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 25,
+            "lightState": "green",
+            "secondsToRed": 5,
+            "canStopComfortably": true,
+            "willClearBeforeRed": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight",
+          "intersectionClear": true,
+          "exitHasRoom": true
+        },
+        "text": "Car 31. Current speed 25 mph. Limit here 25 mph.\nNext control: traffic light, stop line 25 m ahead, going straight. Light is GREEN.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "proceed",
+      "acceptableActions": [
+        "proceed",
+        "slow_down"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "A04",
+      "category": "ambiguous",
+      "title": "Left turn, oncoming car 60 m away at 25 mph",
+      "sceneText": "Intersection D (Maple St and Oak St): traffic light.\nSignal: Maple St (north-south) GREEN, changes in about 8 s; Oak St (east-west) RED, changes in about 12 s.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "38",
+        "facts": {
+          "speedMph": 3,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 1,
+            "lightState": "green",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "left",
+          "intersectionClear": true,
+          "oncomingGapSafe": true,
+          "exitHasRoom": true
+        },
+        "text": "Car 38. Current speed 3 mph. Limit here 25 mph.\nNext control: traffic light, stop line 1 m ahead, turning left. Light is GREEN.\nOncoming traffic gap long enough to complete the left turn: YES (nearest oncoming car is 60 m away).\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "proceed",
+      "acceptableActions": [
+        "proceed",
+        "yield"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "A05",
+      "category": "ambiguous",
+      "title": "Queue ahead creeping forward at a green",
+      "sceneText": "Intersection A (Grand Ave and Elm St): traffic light with crosswalks.\nSignal: Grand Ave (north-south) GREEN, changes in about 8 s; Elm St (east-west) RED, changes in about 12 s.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "45",
+        "facts": {
+          "speedMph": 5,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 17,
+            "lightState": "green",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight",
+          "leadVehicle": {
+            "distanceM": 5,
+            "speedMph": 1,
+            "stopped": false
+          },
+          "intersectionClear": true
+        },
+        "text": "Car 45. Current speed 5 mph. Limit here 25 mph.\nNext control: traffic light, stop line 17 m ahead, going straight. Light is GREEN.\nVehicle ahead: 5 m, 1 mph.\nEmergency vehicles: none."
+      },
+      "expectedAction": "proceed",
+      "acceptableActions": [
+        "proceed",
+        "slow_down"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "A06",
+      "category": "ambiguous",
+      "title": "All-way stop, opposite car arrived at the same time, both straight",
+      "sceneText": "Intersection B (Maple St and Elm St): all-way stop.\nInside the intersection box: no vehicles.\nAll-way stop arrival order: car 50 (from the north), then car 17 (from the south).",
+      "perception": {
+        "carId": "52",
+        "facts": {
+          "speedMph": 0,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "stop_sign",
+            "distanceM": 1
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight",
+          "hasStoppedAtLine": true,
+          "arrivalRankAtStop": 1,
+          "earlierConflictingCars": 0,
+          "intersectionClear": true,
+          "exitHasRoom": true
+        },
+        "text": "Car 52. Current speed 0 mph. Limit here 25 mph.\nNext control: all-way stop sign, stop line 1 m ahead, going straight.\nFull stop at the line already made: YES.\nArrival order: this car arrived 1st of 2 waiting cars. No earlier arrival crosses this car's path.\nCrossing traffic inside the intersection box: none.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "proceed",
+      "acceptableActions": [
+        "proceed",
+        "yield"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "A07",
+      "category": "ambiguous",
+      "title": "Ambulance approaching the intersection 70 m away on the cross street",
+      "sceneText": "Intersection D (Maple St and Oak St): traffic light.\nSignal: Maple St (north-south) GREEN, changes in about 8 s; Oak St (east-west) RED, changes in about 12 s.\nInside the intersection box: no vehicles.\nActive events: Ambulance with siren on approaching eastbound on Oak St.",
+      "perception": {
+        "carId": "59",
+        "facts": {
+          "speedMph": 24,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 50,
+            "lightState": "green",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight",
+          "intersectionClear": true,
+          "emergencyVehicleCrossingM": 70
+        },
+        "text": "Car 59. Current speed 24 mph. Limit here 25 mph.\nNext control: traffic light, stop line 50 m ahead, going straight. Light is GREEN.\nVehicle ahead: none within 60 m.\nAmbulance with siren on, approaching this intersection on another road, 70 m away."
+      },
+      "expectedAction": "slow_down",
+      "acceptableActions": [
+        "slow_down",
+        "yield",
+        "proceed",
+        "stop_at_line"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "A08",
+      "category": "ambiguous",
+      "title": "Distracted pedestrian on the far side 50 m ahead",
+      "sceneText": "Road segment (Maple St N): no traffic control on this segment.",
+      "perception": {
+        "carId": "66",
+        "facts": {
+          "speedMph": 25,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "none",
+            "distanceM": 0
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 1
+        },
+        "text": "Car 66. Current speed 25 mph. Limit here 25 mph.\nNext control: none within 80 m.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none.\nA pedestrian is standing at the left curb 50 m ahead, facing the road and looking at a phone. There is no crosswalk here and no walk signal."
+      },
+      "expectedAction": "slow_down",
+      "acceptableActions": [
+        "slow_down",
+        "proceed"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "A09",
+      "category": "ambiguous",
+      "title": "School zone active, no children visible, at 20 mph",
+      "sceneText": "Intersection C (Grand Ave and Oak St): traffic light with crosswalks.\nSignal: Grand Ave (north-south) GREEN, changes in about 8 s; Oak St (east-west) RED, changes in about 12 s.\nSchool zone ACTIVE: 20 mph.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "73",
+        "facts": {
+          "speedMph": 20,
+          "limitMph": 20,
+          "schoolZoneActive": true,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 55,
+            "lightState": "green",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight",
+          "intersectionClear": true
+        },
+        "text": "Car 73. Current speed 20 mph. Limit here 20 mph: school zone ACTIVE.\nNext control: traffic light, stop line 55 m ahead, going straight. Light is GREEN.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "proceed",
+      "acceptableActions": [
+        "proceed",
+        "slow_down"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "A10",
+      "category": "ambiguous",
+      "title": "School zone begins 30 m ahead, car at 34 mph",
+      "sceneText": "Road segment (Grand Ave S): no traffic control on this segment.",
+      "perception": {
+        "carId": "80",
+        "facts": {
+          "speedMph": 34,
+          "limitMph": 35,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "none",
+            "distanceM": 0
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "limitAhead": {
+            "mph": 20,
+            "distanceM": 30
+          }
+        },
+        "text": "Car 80. Current speed 34 mph. Limit here 35 mph. Active school zone starts in 30 m: limit there 20 mph.\nNext control: none within 80 m.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "slow_down",
+      "acceptableActions": [
+        "slow_down",
+        "proceed"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "A11",
+      "category": "ambiguous",
+      "title": "Stalled car in the oncoming lane, not this one",
+      "sceneText": "Road segment (Elm St E): no traffic control on this segment.",
+      "perception": {
+        "carId": "87",
+        "facts": {
+          "speedMph": 24,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "none",
+            "distanceM": 0
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0
+        },
+        "text": "Car 87. Current speed 24 mph. Limit here 25 mph.\nNext control: none within 80 m.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none.\nA stalled car with hazard lights is stopped in the oncoming lane 30 m ahead."
+      },
+      "expectedAction": "slow_down",
+      "acceptableActions": [
+        "slow_down",
+        "proceed"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "A12",
+      "category": "ambiguous",
+      "title": "Vehicle behind following closely on a yellow you can stop for",
+      "sceneText": "Intersection D (Maple St and Oak St): traffic light.\nSignal: Maple St (north-south) YELLOW, changes in about 3 s; Oak St (east-west) RED, changes in about 12 s.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "14",
+        "facts": {
+          "speedMph": 25,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 26,
+            "lightState": "yellow",
+            "secondsToRed": 3.3,
+            "canStopComfortably": true,
+            "willClearBeforeRed": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight"
+        },
+        "text": "Car 14. Current speed 25 mph. Limit here 25 mph.\nNext control: traffic light, stop line 26 m ahead, going straight. Light is YELLOW and turns red in about 3.3 s.\nAt current speed this car reaches the stop line in 2.3 s, so it WILL clear before red.\nComfortable stop before the line: YES.\nVehicle ahead: none within 60 m. Vehicle behind: 4 m back, 26 mph.\nEmergency vehicles: none."
+      },
+      "expectedAction": "stop_at_line",
+      "acceptableActions": [
+        "stop_at_line",
+        "proceed"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "A13",
+      "category": "ambiguous",
+      "title": "Green light, a car in the box finishing a left turn across the path",
+      "sceneText": "Intersection D (Maple St and Oak St): traffic light.\nSignal: Maple St (north-south) GREEN, changes in about 8 s; Oak St (east-west) RED, changes in about 12 s.\nInside the intersection box: car 34 (southbound, turning left).",
+      "perception": {
+        "carId": "21",
+        "facts": {
+          "speedMph": 12,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 14,
+            "lightState": "green",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight",
+          "intersectionClear": false,
+          "exitHasRoom": true
+        },
+        "text": "Car 21. Current speed 12 mph. Limit here 25 mph.\nNext control: traffic light, stop line 14 m ahead, going straight. Light is GREEN.\nCrossing traffic inside the intersection box: YES (car 34 (southbound, turning left)).\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "yield",
+      "acceptableActions": [
+        "yield",
+        "slow_down",
+        "stop_at_line"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "A14",
+      "category": "ambiguous",
+      "title": "Pedestrian in the crosswalk on the far side of the road, moving away",
+      "sceneText": "Intersection C (Grand Ave and Oak St): traffic light with crosswalks.\nSignal: Grand Ave (north-south) RED, changes in about 8 s; Oak St (east-west) GREEN, changes in about 12 s.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "28",
+        "facts": {
+          "speedMph": 8,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 2,
+            "lightState": "green",
+            "canStopComfortably": false
+          },
+          "pedestriansInCrosswalk": 1,
+          "pedestriansAtCurb": 0,
+          "turn": "right",
+          "crosswalkAheadM": 13,
+          "intersectionClear": true
+        },
+        "text": "Car 28. Current speed 8 mph. Limit here 25 mph.\nNext control: traffic light, stop line 2 m ahead, turning right. Light is GREEN.\nCrosswalk 13 m ahead (just past the turn): 1 pedestrian in it, on the far side of the road and walking away from this lane.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "yield",
+      "acceptableActions": [
+        "yield",
+        "slow_down"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "A15",
+      "category": "ambiguous",
+      "title": "Flashing red, stopped, arrived first, a car from the right arrived moments later",
+      "sceneText": "Intersection D (Maple St and Oak St): traffic signal FAILED, flashing red on all approaches: all-way stop.\nInside the intersection box: no vehicles.\nAll-way stop arrival order: car 29 (from the south), then car 88 (from the east).",
+      "perception": {
+        "carId": "35",
+        "facts": {
+          "speedMph": 0,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 1,
+            "lightState": "flashing_red",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight",
+          "hasStoppedAtLine": true,
+          "arrivalRankAtStop": 1,
+          "earlierConflictingCars": 0,
+          "intersectionClear": true,
+          "exitHasRoom": true
+        },
+        "text": "Car 35. Current speed 0 mph. Limit here 25 mph.\nNext control: traffic signal, stop line 1 m ahead, going straight. The signal has FAILED and is FLASHING RED: it works as an all-way stop.\nFull stop at the line already made: YES.\nArrival order: this car arrived 1st of 2 waiting cars. No earlier arrival crosses this car's path.\nCrossing traffic inside the intersection box: none.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "proceed",
+      "acceptableActions": [
+        "proceed",
+        "yield"
+      ],
+      "expectedMustStop": true
+    },
+    {
+      "id": "A16",
+      "category": "ambiguous",
+      "title": "Ball rolled across 60 m ahead on the far side",
+      "sceneText": "Road segment (Oak St E): no traffic control on this segment.",
+      "perception": {
+        "carId": "42",
+        "facts": {
+          "speedMph": 24,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "none",
+            "distanceM": 0
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0
+        },
+        "text": "Car 42. Current speed 24 mph. Limit here 25 mph.\nNext control: none within 80 m.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none.\nA ball rolled across the road 60 m ahead a moment ago, from between parked cars. Nobody has followed it yet."
+      },
+      "expectedAction": "slow_down",
+      "acceptableActions": [
+        "slow_down",
+        "proceed"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "A17",
+      "category": "ambiguous",
+      "title": "Officer present but not signalling this lane, light green",
+      "sceneText": "Intersection A (Grand Ave and Elm St): traffic light with crosswalks.\nSignal: Grand Ave (north-south) GREEN, changes in about 8 s; Elm St (east-west) RED, changes in about 12 s.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "49",
+        "facts": {
+          "speedMph": 20,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "light",
+            "distanceM": 35,
+            "lightState": "green",
+            "canStopComfortably": true
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "turn": "straight",
+          "officerCommand": "none",
+          "intersectionClear": true
+        },
+        "text": "Car 49. Current speed 20 mph. Limit here 25 mph.\nNext control: traffic light, stop line 35 m ahead, going straight. Light is GREEN.\nVehicle ahead: none within 60 m.\nEmergency vehicles: none.\nA police officer is standing at the corner of the intersection, not directing traffic."
+      },
+      "expectedAction": "proceed",
+      "acceptableActions": [
+        "proceed",
+        "slow_down"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "A18",
+      "category": "ambiguous",
+      "title": "Inside the box turning left, oncoming gap closing",
+      "sceneText": "Intersection D (Maple St and Oak St): traffic light.\nSignal: Maple St (north-south) YELLOW, changes in about 8 s; Oak St (east-west) RED, changes in about 12 s.\nInside the intersection box: no vehicles.",
+      "perception": {
+        "carId": "56",
+        "facts": {
+          "speedMph": 3,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "none",
+            "distanceM": 0
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "inIntersection": true,
+          "turn": "left",
+          "intersectionClear": true,
+          "oncomingGapSafe": false
+        },
+        "text": "Car 56. Current speed 3 mph. Limit here 25 mph.\nThis car is inside the intersection box now, turning left; it has already crossed the stop line.\nCrossing traffic inside the intersection box: none.\nOncoming traffic gap long enough to complete the left turn: NO (car 90 is 25 m away at 20 mph, arriving in about 2.8 s).\nVehicle ahead: none within 60 m.\nEmergency vehicles: none."
+      },
+      "expectedAction": "yield",
+      "acceptableActions": [
+        "yield",
+        "proceed"
+      ],
+      "expectedMustStop": false,
+      "notes": "Entered on yellow; finishing the turn at the end of the phase is common."
+    },
+    {
+      "id": "A19",
+      "category": "ambiguous",
+      "title": "Construction flagger turning the paddle, now SLOW, car stopped first in line",
+      "sceneText": "Road segment (Elm St W): no traffic control on this segment.",
+      "perception": {
+        "carId": "63",
+        "facts": {
+          "speedMph": 0,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "none",
+            "distanceM": 0
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "flagger": {
+            "command": "slow",
+            "distanceM": 2
+          }
+        },
+        "text": "Car 63. Current speed 0 mph. Limit here 25 mph.\nNext control: none within 80 m.\nConstruction flagger 2 m ahead in this lane showing a SLOW paddle.\nVehicle ahead: none within 60 m. Vehicle behind: 6 m back, 0 mph.\nEmergency vehicles: none."
+      },
+      "expectedAction": "proceed",
+      "acceptableActions": [
+        "proceed",
+        "slow_down"
+      ],
+      "expectedMustStop": false
+    },
+    {
+      "id": "A20",
+      "category": "ambiguous",
+      "title": "Emergency vehicle 80 m behind, siren faint",
+      "sceneText": "Road segment (Grand Ave N): no traffic control on this segment.\nActive events: Ambulance with siren on approaching northbound on Grand Ave.",
+      "perception": {
+        "carId": "70",
+        "facts": {
+          "speedMph": 25,
+          "limitMph": 25,
+          "schoolZoneActive": false,
+          "nextControl": {
+            "kind": "none",
+            "distanceM": 0
+          },
+          "pedestriansInCrosswalk": 0,
+          "pedestriansAtCurb": 0,
+          "emergencyVehicleBehindM": 80
+        },
+        "text": "Car 70. Current speed 25 mph. Limit here 25 mph.\nNext control: none within 80 m.\nVehicle ahead: none within 60 m.\nAmbulance with siren on, 80 m behind this car in the same lane and closing."
+      },
+      "expectedAction": "pull_over",
+      "acceptableActions": [
+        "pull_over",
+        "slow_down",
+        "proceed"
+      ],
+      "expectedMustStop": false
+    }
+  ]
+}
