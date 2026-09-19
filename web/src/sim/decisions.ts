@@ -17,36 +17,31 @@ import type { Simulation } from "./sim.ts";
 
 const nowMs = () => (typeof performance !== "undefined" ? performance.now() : Date.now());
 
-/** Global request limiter (real time), shared by every simulation on the page. */
+/**
+ * Global request limiter (real time), shared by every simulation on the
+ * page: a sliding one-second window, so no second ever holds more than
+ * `rate` requests (a token bucket would allow bursts above it).
+ */
 export class TokenBucket {
-  private tokens: number;
-  private last = nowMs();
+  private sent: number[] = [];
   constructor(
     public rate: number,
-    public burst: number,
-  ) {
-    this.tokens = burst;
+    public burst = rate,
+  ) {}
+  private prune(t: number) {
+    while (this.sent.length && this.sent[0] <= t - 1000) this.sent.shift();
   }
   take(): boolean {
     const t = nowMs();
-    this.tokens = Math.min(this.burst, this.tokens + ((t - this.last) / 1000) * this.rate);
-    this.last = t;
-    if (this.tokens >= 1) {
-      this.tokens -= 1;
-      return true;
-    }
-    return false;
-  }
-  /** Requests sent in the last second (for the UI gauge). */
-  sent: number[] = [];
-  mark() {
-    const t = nowMs();
+    this.prune(t);
+    if (this.sent.length >= this.rate) return false;
     this.sent.push(t);
-    while (this.sent.length && this.sent[0] < t - 1000) this.sent.shift();
+    return true;
   }
+  /** Kept for callers that marked sends separately. */
+  mark() {}
   get perSecond(): number {
-    const t = nowMs();
-    while (this.sent.length && this.sent[0] < t - 1000) this.sent.shift();
+    this.prune(nowMs());
     return this.sent.length;
   }
 }

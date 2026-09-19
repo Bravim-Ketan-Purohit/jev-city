@@ -18,13 +18,22 @@ export type QuestionJson =
   | { type: "score"; instructions: string; criteria: string[] }
   | { type: "noul"; instructions: string };
 
+// The first sentence of each option is the build spec's wording. The second
+// separates the options, following TypeSafe's guidance that descriptions
+// should say where one option ends and the next begins: `proceed` and
+// `slow_down` otherwise overlap on ordinary approaches, which spreads
+// probability without any real disagreement.
 export const ACTION_CRITERIA: Record<Action, string> = {
-  proceed: "Continue toward the target speed.",
-  slow_down: "Reduce speed and stay ready to stop.",
-  stop_at_line: "Come to a controlled stop at the next stop line.",
-  emergency_stop: "Brake as hard as possible now.",
-  yield: "Wait for another road user to go first.",
-  pull_over: "Move to the right edge of the road and stop.",
+  proceed:
+    "Continue toward the target speed. The normal choice when the path is clear and traffic law lets the car go, including turning and clearing an intersection; the separate speed question sets how fast.",
+  slow_down:
+    "Reduce speed and stay ready to stop. For a specific hazard that may require stopping, such as a person or object near the path or a situation that is still unclear.",
+  stop_at_line:
+    "Come to a controlled stop at the next stop line. For a red light, a stop sign, a yellow light the car can stop for comfortably, or an instruction to stop.",
+  emergency_stop: "Brake as hard as possible now. Only for an imminent collision or a person directly in the path.",
+  yield:
+    "Wait for another road user to go first. For a pedestrian in a crosswalk, a car with the right of way, oncoming traffic before a left turn, or a vehicle blocking the lane.",
+  pull_over: "Move to the right edge of the road and stop. For an emergency vehicle with its siren on approaching this car.",
   other: "None of these fit.",
 };
 

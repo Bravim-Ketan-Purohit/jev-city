@@ -7,7 +7,8 @@
     "build": "pnpm --filter @jev-city/web build",
     "bench": "pnpm --filter @jev-city/bench bench",
     "sim:check": "pnpm --filter @jev-city/web sim:check",
-    "typecheck": "pnpm -r typecheck"
+    "typecheck": "pnpm -r typecheck",
+    "smoke": "pnpm --filter @jev-city/server smoke"
   },
   "devDependencies": {
     "@types/node": "^26.6.1",

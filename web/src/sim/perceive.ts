@@ -49,6 +49,16 @@ export function perceive(sim: Simulation, c: Car): CarPerception {
   if (box) {
     f.inIntersection = true;
     f.turn = box.turn;
+    // What still matters inside the box: crossing traffic and, for a left
+    // turn, oncoming traffic.
+    const blocker = sim.conflictInBox(box.conn, c);
+    f.intersectionClear = !blocker;
+    if (blocker) x.boxDetail = describeCar(blocker, sim);
+    if (box.turn === "left") {
+      const gap = oncomingGap(sim, c, box.int, box.arm);
+      f.oncomingGapSafe = gap.safe;
+      if (gap.detail) x.oncomingDetail = gap.detail;
+    }
   } else if (ns && ns.s - c.s <= LOOK) {
     const d = Math.max(0, ns.s - c.s);
     f.turn = ns.turn;

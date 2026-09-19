@@ -32,6 +32,7 @@ if (brainName === "jev") {
 
 const sim = new Simulation({ seed: 1234, carCount: Number(arg("cars", "30")), brainMode: "rules" });
 installLayers(sim, { pedestrians: true });
+sim.opts.decision.batching = arg("batching", "per-zone") as "per-zone" | "per-car";
 const bucket = new TokenBucket(15, 15);
 const sched = new DecisionScheduler(
   sim,
@@ -79,6 +80,12 @@ console.log(`  latency p50 ${percentile(lat, 50).toFixed(0)} ms, p95 ${percentil
 console.log(`  stale ${b.stale}, low-confidence ${b.lowConf}, api errors ${b.apiErrors}`);
 console.log(`  tokens ${b.inputTokens}${b.tokensEstimated ? " (estimated)" : ""}, models ${[...b.models].join(", ")}`);
 console.log(`  violations ${sim.metrics.violations.length} ${JSON.stringify(sim.metrics.violations.map((v) => v.kind))}, interventions ${sim.metrics.interventions.length}, gridlocks ${sim.metrics.gridlocks.length}`);
+const dump = arg("dump", "");
+if (dump) {
+  const { writeFileSync } = await import("node:fs");
+  writeFileSync(dump, sim.decisionLog.map((r) => JSON.stringify(r)).join("\n") + "\n");
+  console.log(`  wrote ${sim.decisionLog.length} decisions to ${dump}`);
+}
 const cautious = sim.cars.filter((c) => c.fallback).length;
 console.log(`  cars in cautious mode now: ${cautious}/${sim.cars.length}`);
 process.exit(0);

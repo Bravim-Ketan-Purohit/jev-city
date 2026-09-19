@@ -66,7 +66,17 @@ export function renderPerceptionText(
 
   const nc = f.nextControl;
   if (f.inIntersection) {
-    lines.push(`This car is inside the intersection box now, ${turnPhrase(f.turn)}.`);
+    lines.push(`This car is inside the intersection box now, ${turnPhrase(f.turn)}; it has already crossed the stop line.`);
+    if (f.intersectionClear !== undefined)
+      lines.push(
+        f.intersectionClear
+          ? "Crossing traffic inside the intersection box: none."
+          : `Crossing traffic inside the intersection box: YES${x.boxDetail ? ` (${x.boxDetail})` : ""}.`,
+      );
+    if (f.turn === "left" && f.oncomingGapSafe !== undefined)
+      lines.push(
+        `Oncoming traffic gap long enough to complete the left turn: ${f.oncomingGapSafe ? "YES" : "NO"}${x.oncomingDetail ? ` (${x.oncomingDetail})` : ""}.`,
+      );
   } else if (nc.kind === "light" && nc.lightState === "flashing_red") {
     lines.push(
       `Next control: traffic signal, stop line ${r0(nc.distanceM)} m ahead, ${turnPhrase(f.turn)}. The signal has FAILED and is FLASHING RED: it works as an all-way stop.`,
@@ -75,14 +85,11 @@ export function renderPerceptionText(
     let s = `Next control: traffic light, stop line ${r0(nc.distanceM)} m ahead, ${turnPhrase(f.turn)}. Light is ${lightWord(nc.lightState)}`;
     if (nc.lightState === "yellow" && nc.secondsToRed !== undefined) {
       s += ` and turns red in about ${r1(nc.secondsToRed)} s`;
-    } else if (nc.lightState === "green" && nc.secondsToRed !== undefined && nc.secondsToRed < 8) {
-      s += ` and turns red in about ${r1(nc.secondsToRed)} s`;
     }
     lines.push(s + ".");
-    const timed =
-      nc.lightState === "yellow" ||
-      (nc.lightState === "green" && nc.secondsToRed !== undefined && nc.secondsToRed < 8);
-    if (timed && nc.willClearBeforeRed !== undefined && f.speedMph > 1) {
+    // Stopping feasibility is the yellow-light decision; on green it only
+    // invites premature stopping, so the timing line is yellow-only.
+    if (nc.lightState === "yellow" && nc.willClearBeforeRed !== undefined && f.speedMph > 1) {
       const t = nc.distanceM / Math.max(0.5, f.speedMph * 0.44704);
       lines.push(
         `At current speed this car reaches the stop line in ${r1(t)} s, so it ${nc.willClearBeforeRed ? "WILL clear" : "will NOT clear"} before red.`,
@@ -126,7 +133,7 @@ export function renderPerceptionText(
     } else if (allWay && f.intersectionClear && nc.distanceM < 40) {
       lines.push("Crossing traffic inside the intersection box: none.");
     }
-    if (f.turn === "left" && f.oncomingGapSafe !== undefined && relevant) {
+    if (f.turn === "left" && f.oncomingGapSafe !== undefined && nc.lightState !== "red") {
       lines.push(
         `Oncoming traffic gap long enough to complete the left turn: ${f.oncomingGapSafe ? "YES" : "NO"}${x.oncomingDetail ? ` (${x.oncomingDetail})` : ""}.`,
       );

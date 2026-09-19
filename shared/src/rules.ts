@@ -119,6 +119,7 @@ export function ruleDecide(f: PerceptionFacts): RuleOutput {
     return out("proceed", "slow_down", 2);
   }
 
+
   // 4. Emergency vehicle about to cross the intersection: hold at the line.
   if (f.emergencyVehicleCrossingM !== undefined && nc.kind !== "none" && nc.distanceM < 60)
     return out("yield", "stop_at_line", approachLevel(nc.distanceM));
