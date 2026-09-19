@@ -33,37 +33,37 @@
       "brierMustStop": 0.03,
       "calibration": [
         {
-          "bucket": "< 0.5",
+          "bucket": "below 0.5",
           "n": 0,
           "meanConfidence": null,
           "accuracy": null
         },
         {
-          "bucket": "0.5–0.6",
+          "bucket": "0.5 to 0.6",
           "n": 0,
           "meanConfidence": null,
           "accuracy": null
         },
         {
-          "bucket": "0.6–0.7",
+          "bucket": "0.6 to 0.7",
           "n": 0,
           "meanConfidence": null,
           "accuracy": null
         },
         {
-          "bucket": "0.7–0.8",
+          "bucket": "0.7 to 0.8",
           "n": 0,
           "meanConfidence": null,
           "accuracy": null
         },
         {
-          "bucket": "0.8–0.9",
+          "bucket": "0.8 to 0.9",
           "n": 0,
           "meanConfidence": null,
           "accuracy": null
         },
         {
-          "bucket": "0.9–1.0",
+          "bucket": "0.9 to 1.0",
           "n": 300,
           "meanConfidence": 1,
           "accuracy": 0.9
@@ -113,37 +113,37 @@
       "brierMustStop": 0.03236062896638756,
       "calibration": [
         {
-          "bucket": "< 0.5",
+          "bucket": "below 0.5",
           "n": 3,
           "meanConfidence": 0.46554570416177815,
           "accuracy": 1
         },
         {
-          "bucket": "0.5–0.6",
+          "bucket": "0.5 to 0.6",
           "n": 32,
           "meanConfidence": 0.5600077301760659,
           "accuracy": 0.90625
         },
         {
-          "bucket": "0.6–0.7",
+          "bucket": "0.6 to 0.7",
           "n": 63,
           "meanConfidence": 0.6526094009738163,
           "accuracy": 0.8253968253968254
         },
         {
-          "bucket": "0.7–0.8",
+          "bucket": "0.7 to 0.8",
           "n": 87,
           "meanConfidence": 0.7517965071745661,
           "accuracy": 0.8735632183908046
         },
         {
-          "bucket": "0.8–0.9",
+          "bucket": "0.8 to 0.9",
           "n": 57,
           "meanConfidence": 0.8414422660935796,
           "accuracy": 0.8596491228070176
         },
         {
-          "bucket": "0.9–1.0",
+          "bucket": "0.9 to 1.0",
           "n": 58,
           "meanConfidence": 0.9483976154244641,
           "accuracy": 0.9137931034482759
@@ -193,37 +193,37 @@
       "brierMustStop": 0.10894766666666666,
       "calibration": [
         {
-          "bucket": "< 0.5",
+          "bucket": "below 0.5",
           "n": 68,
           "meanConfidence": 0.3798529411764706,
           "accuracy": 0.7058823529411765
         },
         {
-          "bucket": "0.5–0.6",
+          "bucket": "0.5 to 0.6",
           "n": 20,
           "meanConfidence": 0.5455,
           "accuracy": 0.7
         },
         {
-          "bucket": "0.6–0.7",
+          "bucket": "0.6 to 0.7",
           "n": 24,
           "meanConfidence": 0.6425000000000001,
           "accuracy": 0.875
         },
         {
-          "bucket": "0.7–0.8",
+          "bucket": "0.7 to 0.8",
           "n": 38,
           "meanConfidence": 0.7505263157894737,
           "accuracy": 0.9736842105263158
         },
         {
-          "bucket": "0.8–0.9",
+          "bucket": "0.8 to 0.9",
           "n": 43,
           "meanConfidence": 0.840697674418605,
           "accuracy": 0.8837209302325582
         },
         {
-          "bucket": "0.9–1.0",
+          "bucket": "0.9 to 1.0",
           "n": 107,
           "meanConfidence": 0.9717757009345791,
           "accuracy": 1

@@ -8,11 +8,11 @@ Generated 2026-09-19 09:32 UTC · 100 scenarios (40 rule, 40 judgment, 20 ambigu
 
 | Brain | Accuracy (acceptable set) | Exact match | Rule | Judgment | Ambiguous | must_stop Brier | p50 latency | p95 latency | Runs agree | Tokens / request | Cost, all runs |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Rules | 90.0% | 80.0% | 100.0% | 75.0% | 100.0% | 0.030 | 0.001 ms | 0.006 ms | 100.0% | – | – |
+| Rules | 90.0% | 80.0% | 100.0% | 75.0% | 100.0% | 0.030 | 0.001 ms | 0.006 ms | 100.0% | n/a | n/a |
 | Mock Jev | 87.3% | 76.3% | 96.7% | 73.3% | 96.7% | 0.032 | 302 ms | 483 ms | 84.0% | 584 (est.) | $0.0074 |
 | Jev | 88.3% | 74.3% | 88.3% | 85.0% | 95.0% | 0.109 | 199 ms | 396 ms | 95.0% | 932 | $0.0117 |
 
-Accuracy counts an answer as correct when the chosen action is in the scenario's acceptable set; exact match requires the single expected action. Mock Jev latency is sampled (70–500 ms) rather than waited for, and its tokens are a characters ÷ 4 estimate; Jev latency is measured around each API call and its tokens come from the response's `usage`.
+Accuracy counts an answer as correct when the chosen action is in the scenario's acceptable set; exact match requires the single expected action. Mock Jev latency is sampled (70 to 500 ms) rather than waited for, and its tokens are a characters ÷ 4 estimate; Jev latency is measured around each API call and its tokens come from the response's `usage`.
 
 ## Accuracy by category
 
@@ -30,23 +30,23 @@ Action confidence bucketed against observed accuracy (acceptable set). A well-ca
 
 | Confidence | Decisions | Mean confidence | Observed accuracy |
 | --- | --- | --- | --- |
-| < 0.5 | 3 | 0.466 | 100.0% |
-| 0.5–0.6 | 32 | 0.560 | 90.6% |
-| 0.6–0.7 | 63 | 0.653 | 82.5% |
-| 0.7–0.8 | 87 | 0.752 | 87.4% |
-| 0.8–0.9 | 57 | 0.841 | 86.0% |
-| 0.9–1.0 | 58 | 0.948 | 91.4% |
+| below 0.5 | 3 | 0.466 | 100.0% |
+| 0.5 to 0.6 | 32 | 0.560 | 90.6% |
+| 0.6 to 0.7 | 63 | 0.653 | 82.5% |
+| 0.7 to 0.8 | 87 | 0.752 | 87.4% |
+| 0.8 to 0.9 | 57 | 0.841 | 86.0% |
+| 0.9 to 1.0 | 58 | 0.948 | 91.4% |
 
 **Jev**
 
 | Confidence | Decisions | Mean confidence | Observed accuracy |
 | --- | --- | --- | --- |
-| < 0.5 | 68 | 0.380 | 70.6% |
-| 0.5–0.6 | 20 | 0.545 | 70.0% |
-| 0.6–0.7 | 24 | 0.643 | 87.5% |
-| 0.7–0.8 | 38 | 0.751 | 97.4% |
-| 0.8–0.9 | 43 | 0.841 | 88.4% |
-| 0.9–1.0 | 107 | 0.972 | 100.0% |
+| below 0.5 | 68 | 0.380 | 70.6% |
+| 0.5 to 0.6 | 20 | 0.545 | 70.0% |
+| 0.6 to 0.7 | 24 | 0.643 | 87.5% |
+| 0.7 to 0.8 | 38 | 0.751 | 97.4% |
+| 0.8 to 0.9 | 43 | 0.841 | 88.4% |
+| 0.9 to 1.0 | 107 | 0.972 | 100.0% |
 
 ## must_stop
 
@@ -111,5 +111,5 @@ Majority action per brain for scenarios where at least one brain chose an action
 - Each scenario is one request: the zone scene plus the car's perception as state, and the car's questions (`action` Choice with an explicit `other`, `speed` and `hazard` Scores, `must_stop` Noul, and `right_of_way` Noul where it applies). The same question builders drive the live simulation.
 - The perception text is rendered from structured facts by the same serializer the live simulation uses; all distances, times, stopping feasibility and arrival order are computed in code and stated in words.
 - RuleBrain reads only the structured facts, never the free text, so judgment events that only appear in text (a ball that has already left the lane, a distracted pedestrian) are invisible to it by design.
-- Mock Jev wraps RuleBrain with noisy probabilities, 70–500 ms sampled latency and a 5% second-best pick; it is a plumbing check, not a model.
+- Mock Jev wraps RuleBrain with noisy probabilities, 70 to 500 ms sampled latency and a 5% second-best pick; it is a plumbing check, not a model.
 - Caveat on fairness: the scenario labels and RuleBrain were drafted together. RuleBrain's `must_stop` logic implements the same label convention (see the top of `bench/src/build-scenarios.ts`), so its Brier score is low by construction, and its rule-category accuracy reflects shared assumptions. Independent label review is the main way to remove that bias.

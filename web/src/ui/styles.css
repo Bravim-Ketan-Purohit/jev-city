@@ -417,7 +417,7 @@ button {
 .banner {
   position: absolute;
   left: 50%;
-  top: 12px;
+  top: 70px;
   transform: translateX(-50%);
   background: var(--ink);
   color: #fff;

@@ -17,7 +17,7 @@ function arg(name: string, def: string): string {
 
 const seconds = Number(arg("seconds", "30"));
 const speed = Number(arg("speed", "1"));
-const brainName = arg("brain", "mock-jev") as "mock-jev" | "jev";
+const brainName = arg("brain", "mock-jev") as "rules" | "mock-jev" | "jev";
 const server = arg("server", "http://localhost:8787");
 
 let jev: Brain | undefined;
@@ -86,6 +86,11 @@ if (dump) {
   writeFileSync(dump, sim.decisionLog.map((r) => JSON.stringify(r)).join("\n") + "\n");
   console.log(`  wrote ${sim.decisionLog.length} decisions to ${dump}`);
 }
+const measured = (sim.time - sim.metrics.startedAt) / 60;
+const exits = Object.values(sim.metrics.exits).reduce((a, x) => a + x.length, 0);
+const trips = sim.metrics.trips;
+console.log(`  flow: ${(exits / measured).toFixed(1)} intersection exits/min, ${trips.length} trips finished, avg trip ${(trips.reduce((a, b) => a + b, 0) / Math.max(1, trips.length)).toFixed(1)} s over ${(measured * 60).toFixed(0)} s`);
+console.log(`  decisions/s ${(b.decisions / (measured * 60)).toFixed(1)}, low-confidence share ${((100 * b.lowConf) / Math.max(1, b.decisions)).toFixed(1)}%`);
 const cautious = sim.cars.filter((c) => c.fallback).length;
 console.log(`  cars in cautious mode now: ${cautious}/${sim.cars.length}`);
 process.exit(0);

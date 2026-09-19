@@ -19,3 +19,6 @@ bench/out/
 .DS_Store
 .idea/
 .vscode/
+
+# Demo recording scratch
+docs/media/.frames/

@@ -452,13 +452,14 @@ export class App {
     return pane && car ? { pane, car } : null;
   }
 
-  flash(text: string, tone: "" | "warn" | "bad" = "", ms = 3500) {
-    for (const p of this.panes) {
-      p.banner.textContent = text;
+  flash(text: string | string[], tone: "" | "warn" | "bad" = "", ms = 3500) {
+    this.panes.forEach((p, i) => {
+      const msg = Array.isArray(text) ? text[i] ?? text[0] : text;
+      p.banner.textContent = msg;
       p.banner.className = `banner show ${tone}`;
       clearTimeout((p.banner as HTMLElement & { _t?: number })._t);
       (p.banner as HTMLElement & { _t?: number })._t = window.setTimeout(() => (p.banner.className = "banner"), ms);
-    }
+    });
   }
 
   exportLog() {

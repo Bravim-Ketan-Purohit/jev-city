@@ -125,7 +125,16 @@ async function pool<T>(items: T[], n: number, fn: (x: T) => Promise<void>) {
 }
 
 const records: Rec[] = [];
-const started = new Date();
+let started = new Date();
+
+// --rerender: rebuild results.md from the saved results.json without calling any brain.
+const rerender = process.argv.includes("--rerender");
+if (rerender) {
+  const saved = JSON.parse(readFileSync(resolve(ROOT, "results.json"), "utf8")) as { generatedAt: string; records: Rec[] };
+  records.push(...saved.records);
+  started = new Date(saved.generatedAt);
+  brains.splice(0, brains.length, ...(["rules", "mock-jev", "jev"] as BrainName[]).filter((b) => saved.records.some((r) => r.brain === b)));
+}
 
 if (pack > 0) {
   if (!hasKey()) throw new Error("--pack needs TYPESAFE_API_KEY");
@@ -169,7 +178,7 @@ if (pack > 0) {
   process.exit(0);
 }
 
-for (const b of brains) {
+for (const b of rerender ? [] : brains) {
   for (let run = 1; run <= runs; run++) {
     const runner = runnerFor(b, 1000 + run);
     const t0 = Date.now();
@@ -231,8 +240,8 @@ for (const b of brains) {
 // ------------------------------------------------------------------ aggregate
 
 const CATS: ScenarioCategory[] = ["rule", "judgment", "ambiguous"];
-const pct = (x: number) => (Number.isFinite(x) ? `${(x * 100).toFixed(1)}%` : "–");
-const f2 = (x: number) => (Number.isFinite(x) ? x.toFixed(3) : "–");
+const pct = (x: number) => (Number.isFinite(x) ? `${(x * 100).toFixed(1)}%` : "n/a");
+const f2 = (x: number) => (Number.isFinite(x) ? x.toFixed(3) : "n/a");
 const mean = (xs: number[]) => (xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : NaN);
 
 interface Summary {
@@ -261,12 +270,12 @@ function summarize(b: BrainName): Summary {
     }),
   ) as Summary["byCategory"];
   const buckets: [number, number, string][] = [
-    [0, 0.5, "< 0.5"],
-    [0.5, 0.6, "0.5–0.6"],
-    [0.6, 0.7, "0.6–0.7"],
-    [0.7, 0.8, "0.7–0.8"],
-    [0.8, 0.9, "0.8–0.9"],
-    [0.9, 1.0001, "0.9–1.0"],
+    [0, 0.5, "below 0.5"],
+    [0.5, 0.6, "0.5 to 0.6"],
+    [0.6, 0.7, "0.6 to 0.7"],
+    [0.7, 0.8, "0.7 to 0.8"],
+    [0.8, 0.9, "0.8 to 0.9"],
+    [0.9, 1.0001, "0.9 to 1.0"],
   ];
   const calibration = buckets.map(([lo, hi, label]) => {
     const x = good.filter((r) => r.confidence >= lo && r.confidence < hi);
@@ -335,11 +344,11 @@ L.push("| Brain | Accuracy (acceptable set) | Exact match | Rule | Judgment | Am
 L.push("| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |");
 for (const s of summaries) {
   L.push(
-    `| ${label[s.brain]} | ${pct(s.accuracy)} | ${pct(s.strictAccuracy)} | ${pct(s.byCategory.rule.accuracy)} | ${pct(s.byCategory.judgment.accuracy)} | ${pct(s.byCategory.ambiguous.accuracy)} | ${f2(s.brierMustStop)} | ${s.latency.p50.toFixed(s.brain === "rules" ? 3 : 0)} ms | ${s.latency.p95.toFixed(s.brain === "rules" ? 3 : 0)} ms | ${pct(s.consistency.allRunsAgree)} | ${s.brain === "rules" ? "–" : `${Math.round(s.tokens.perRequest)}${s.tokens.estimated ? " (est.)" : ""}`} | ${s.brain === "rules" ? "–" : `$${s.costUsd.toFixed(4)}`} |`,
+    `| ${label[s.brain]} | ${pct(s.accuracy)} | ${pct(s.strictAccuracy)} | ${pct(s.byCategory.rule.accuracy)} | ${pct(s.byCategory.judgment.accuracy)} | ${pct(s.byCategory.ambiguous.accuracy)} | ${f2(s.brierMustStop)} | ${s.latency.p50.toFixed(s.brain === "rules" ? 3 : 0)} ms | ${s.latency.p95.toFixed(s.brain === "rules" ? 3 : 0)} ms | ${pct(s.consistency.allRunsAgree)} | ${s.brain === "rules" ? "n/a" : `${Math.round(s.tokens.perRequest)}${s.tokens.estimated ? " (est.)" : ""}`} | ${s.brain === "rules" ? "n/a" : `$${s.costUsd.toFixed(4)}`} |`,
   );
 }
 L.push("");
-L.push("Accuracy counts an answer as correct when the chosen action is in the scenario's acceptable set; exact match requires the single expected action. Mock Jev latency is sampled (70–500 ms) rather than waited for, and its tokens are a characters ÷ 4 estimate; Jev latency is measured around each API call and its tokens come from the response's `usage`.", "");
+L.push("Accuracy counts an answer as correct when the chosen action is in the scenario's acceptable set; exact match requires the single expected action. Mock Jev latency is sampled (70 to 500 ms) rather than waited for, and its tokens are a characters ÷ 4 estimate; Jev latency is measured around each API call and its tokens come from the response's `usage`.", "");
 if (summaries.some((s) => s.errors)) L.push(`Errors: ${summaries.map((s) => `${label[s.brain]} ${s.errors}`).join(", ")} (counted as wrong).`, "");
 
 L.push("## Accuracy by category", "");
@@ -355,7 +364,7 @@ L.push("Action confidence bucketed against observed accuracy (acceptable set). A
 for (const s of summaries.filter((x) => x.brain !== "rules")) {
   L.push(`**${label[s.brain]}**`, "");
   L.push("| Confidence | Decisions | Mean confidence | Observed accuracy |", "| --- | --- | --- | --- |");
-  for (const b of s.calibration) L.push(`| ${b.bucket} | ${b.n} | ${b.n ? f2(b.meanConfidence) : "–"} | ${b.n ? pct(b.accuracy) : "–"} |`);
+  for (const b of s.calibration) L.push(`| ${b.bucket} | ${b.n} | ${b.n ? f2(b.meanConfidence) : "n/a"} | ${b.n ? pct(b.accuracy) : "n/a"} |`);
   L.push("");
 }
 
@@ -396,7 +405,7 @@ L.push("| --- | --- | --- | " + summaries.map(() => "---").join(" | ") + " |");
 for (const s of scenarios) {
   const maj = summaries.map((x) => majority(x.brain, s.id));
   if (maj.every((a) => a && s.acceptableActions.includes(a))) continue;
-  const cell = (a?: Action) => (a ? (s.acceptableActions.includes(a) ? a : `**${a}** ✗`) : "–");
+  const cell = (a?: Action) => (a ? (s.acceptableActions.includes(a) ? a : `**${a}** ✗`) : "n/a");
   L.push(`| ${s.id} | ${s.title} | ${s.expectedAction} (${s.acceptableActions.join(", ")}) | ${maj.map(cell).join(" | ")} |`);
 }
 L.push("");
@@ -405,7 +414,7 @@ L.push(
   "- Each scenario is one request: the zone scene plus the car's perception as state, and the car's questions (`action` Choice with an explicit `other`, `speed` and `hazard` Scores, `must_stop` Noul, and `right_of_way` Noul where it applies). The same question builders drive the live simulation.",
   "- The perception text is rendered from structured facts by the same serializer the live simulation uses; all distances, times, stopping feasibility and arrival order are computed in code and stated in words.",
   "- RuleBrain reads only the structured facts, never the free text, so judgment events that only appear in text (a ball that has already left the lane, a distracted pedestrian) are invisible to it by design.",
-  "- Mock Jev wraps RuleBrain with noisy probabilities, 70–500 ms sampled latency and a 5% second-best pick; it is a plumbing check, not a model.",
+  "- Mock Jev wraps RuleBrain with noisy probabilities, 70 to 500 ms sampled latency and a 5% second-best pick; it is a plumbing check, not a model.",
   "- Caveat on fairness: the scenario labels and RuleBrain were drafted together. RuleBrain's `must_stop` logic implements the same label convention (see the top of `bench/src/build-scenarios.ts`), so its Brier score is low by construction, and its rule-category accuracy reflects shared assumptions. Independent label review is the main way to remove that bias.",
   "",
 );

@@ -8,11 +8,13 @@
     "bench": "pnpm --filter @jev-city/bench bench",
     "sim:check": "pnpm --filter @jev-city/web sim:check",
     "typecheck": "pnpm -r typecheck",
-    "smoke": "pnpm --filter @jev-city/server smoke"
+    "smoke": "pnpm --filter @jev-city/server smoke",
+    "record:demo": "tsx tools/record-demo.ts"
   },
   "devDependencies": {
     "@types/node": "^26.6.1",
     "concurrently": "^10.0.5",
+    "playwright-core": "^1.63.0",
     "tsx": "^4.23.13",
     "typescript": "^7.0.2"
   }

@@ -93,9 +93,9 @@ export class Toolbar {
       if (!L) continue;
       const r = L.events.inject(k, at);
       ok &&= r.ok;
-      msgs.push(this.app.panes.length > 1 ? `${p.short}: ${r.message}` : r.message);
+      msgs.push(r.message);
     }
-    this.app.flash(msgs.join("  ·  "), ok ? "" : "warn", 4200);
+    this.app.flash(msgs, ok ? "" : "warn", 4200);
     return ok;
   }
 
