@@ -1,0 +1,18 @@
+{
+  "name": "jev-city",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -k -n server,web -c green,blue \"pnpm --filter @jev-city/server dev\" \"pnpm --filter @jev-city/web dev\"",
+    "build": "pnpm --filter @jev-city/web build",
+    "bench": "pnpm --filter @jev-city/bench bench",
+    "sim:check": "pnpm --filter @jev-city/web sim:check",
+    "typecheck": "pnpm -r typecheck"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.1",
+    "concurrently": "^10.0.5",
+    "tsx": "^4.23.13",
+    "typescript": "^7.0.2"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "@jev-city/server",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./jev": "./src/jev.ts"
+  },
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@hono/node-server": "^2.1.1",
+    "@jev-city/shared": "workspace:*",
+    "@typesafe-ai/sdk": "^0.6.0",
+    "dotenv": "^18.0.0",
+    "hono": "^4.13.8"
+  }
+}

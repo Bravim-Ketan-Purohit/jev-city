@@ -1,0 +1,21 @@
+# Secrets: the TypeSafe key lives here and must never be committed
+.env
+.env.*
+!.env.example
+
+# Dependencies and build output
+node_modules/
+dist/
+*.tsbuildinfo
+.vite/
+
+# Logs and local run output
+*.log
+logs/
+decisions-*.jsonl
+bench/out/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/

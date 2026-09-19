@@ -1,0 +1,15 @@
+{
+  "name": "@jev-city/bench",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "bench": "tsx src/run.ts",
+    "scenarios": "tsx src/build-scenarios.ts",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@jev-city/server": "workspace:*",
+    "@jev-city/shared": "workspace:*",
+    "dotenv": "^18.0.0"
+  }
+}

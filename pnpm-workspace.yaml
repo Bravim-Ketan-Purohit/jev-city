@@ -1,0 +1,7 @@
+packages:
+  - shared
+  - web
+  - server
+  - bench
+allowBuilds:
+  esbuild: true
