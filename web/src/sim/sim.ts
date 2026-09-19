@@ -283,8 +283,8 @@ export class Simulation {
       if (p.s0 - c.s > maxDist) break;
       const consider = (o: Occ, base: number) => {
         if (o.car === c) return;
-        if (c.pass && o.car.id === c.pass.targetId) return;
-        if (c.kind === "ambulance" && o.car.lat >= 1.0) return; // pulled over
+        if (c.pass && o.car.id === c.pass.targetId && c.lat < -2.2) return;
+        if (c.kind === "ambulance" && o.car.lat - o.car.W / 2 > c.lat + c.W / 2 + 0.25) return; // pulled over, clear of the ambulance
         const frontRoute = base + o.front;
         if (frontRoute <= c.s + 0.01 && k === i0) return; // behind us
         const gap = Math.max(0, base + o.rear - c.s);
@@ -430,11 +430,11 @@ export class Simulation {
     }
     if (!items) return;
     const route = new Route(items);
-    const limit = toMs(entry.road.limitMph);
-    let v = limit * 0.9;
+    let v = toMs(entry.road.limitMph) * 0.9;
     if (isFinite(minRear)) v = Math.min(v, Math.max(leadV, Math.sqrt(2 * COMFORT_BRAKE * Math.max(0, minRear - 10))));
     const id = this.nextCarId++;
     const car = new Car({ id, kind: "car", brain: this.brainFor(id), route, s: 4.5, v, now: this.time });
+    car.v = Math.min(car.v, toMs(this.effectiveLimitMph(car)) * 0.95);
     this.cars.push(car);
     this.updatePose(car);
     car.prevPose = { ...car.pose };
@@ -584,6 +584,9 @@ export class Simulation {
     const cands: number[] = [];
     if ((wantStop || !ok) && ns && ns.s - c.s < 150) cands.push(ns.s);
     for (const s of this.extraStops(c, forYield || wantStop || !ok)) cands.push(s);
+    // A left turn inside the box waits short of the oncoming lane.
+    const box = r.currentBox(c.s);
+    if (box && box.turn === "left" && (wantStop || !ok) && c.s < leftWaitS(box) - 0.3) cands.push(leftWaitS(box));
     for (const s of cands) if (s > c.s - 0.5 && (stopS === undefined || s < stopS)) stopS = s;
     if (stopS !== undefined) {
       const gap = stopS - c.s;
@@ -598,7 +601,7 @@ export class Simulation {
     v0 = Math.min(v0, this.turnCap(c));
 
     let a = idm(c.v, v0);
-    const lead = c.pass ? null : leader;
+    const lead = leader;
     if (lead) {
       const s0 = lead.car.kind === "stalled" ? 3 : 2;
       a = Math.min(a, idm(c.v, v0, lead.gap, c.v - lead.v, s0, 1.2));
@@ -622,6 +625,10 @@ export class Simulation {
       c.reflex = true;
     } else c.reflex = false;
     c.a = a;
+    // Never steer back into the lane while an emergency vehicle is alongside.
+    if (latT < c.lat && c.lat > 0.3 && this.cars.some((o) => o.kind === "ambulance" && Math.hypot(o.pose.x - c.pose.x, o.pose.y - c.pose.y) < 12)) {
+      latT = c.lat;
+    }
     c.latTarget = latT;
   }
 
@@ -648,8 +655,11 @@ export class Simulation {
     const inBox = r.currentBox(c.s);
     const st = inBox ?? r.nextStop(c.s);
     if (st) {
-      const aboutToEnter = !inBox && this.willCross(c, st.boxS0, planned);
-      const inside = inBox && c.s < st.boxS1 - 2;
+      // Left turns can wait inside the box, so their first conflict point is the wait point.
+      const conflictS = st.turn === "left" ? leftWaitS(st) : st.boxS0;
+      const aboutToEnter = (!inBox || (st.turn === "left" && c.s < conflictS)) && this.willCross(c, conflictS, planned);
+      const insideAfterWait = inBox && !(st.turn === "left" && c.s < conflictS);
+      const inside = insideAfterWait && c.s < st.boxS1 - 2;
       if (aboutToEnter || inside) {
         for (const { car: o, stop } of this.carsInBox(st.int)) {
           if (o === c || !this.city.conflicts(stop.conn, st.conn)) continue;
@@ -663,7 +673,28 @@ export class Simulation {
       }
     }
     if (this.crosswalkThreat(c, planned)) return "pedestrian in crosswalk";
+    if (this.headOn(c)) return "oncoming vehicle";
     return null;
+  }
+
+  /** A vehicle ahead in this car's path coming the other way (passing maneuvers). */
+  private headOn(c: Car): boolean {
+    const h = { x: Math.cos(c.pose.h), y: Math.sin(c.pose.h) };
+    for (const o of this.cars) {
+      if (o === c) continue;
+      // Only while one of the two is out in the oncoming lane (going around).
+      if (c.lat > -1 && o.lat > -1) continue;
+      if (Math.cos(o.pose.h - c.pose.h) > -0.5) continue;
+      const dx = o.pose.x - c.pose.x;
+      const dy = o.pose.y - c.pose.y;
+      const along = dx * h.x + dy * h.y;
+      const lat = -dx * h.y + dy * h.x;
+      if (along <= 0 || Math.abs(lat) > (c.W + o.W) / 2 + 0.3) continue;
+      const gap = along - (c.L + o.L) / 2;
+      const closing = c.v + o.v;
+      if (closing > 0.5 && gap / closing < 1.2) return true;
+    }
+    return false;
   }
 
   // ---------------------------------------------------------------- integration
@@ -723,19 +754,29 @@ export class Simulation {
         this.violation(c, "ran_red", `${st.int.id} from the ${armWord(st.arm)}`);
       }
     }
-    if (this.isAllWay(st.int)) {
+    // A signal that just failed gives committed cars a few seconds of grace.
+    const justFailed = sig?.failed && this.time - sig.failedSince < 4;
+    if (this.isAllWay(st.int) && !justFailed) {
       const minV = Math.min(c.nearLineMin.get(st.idx) ?? c.v, c.v);
       if (minV > 0.447) this.violation(c, "rolled_stop", `${st.int.id} from the ${armWord(st.arm)} at ${toMph(minV).toFixed(0)} mph`);
     }
+    for (const h of this.crossStopHooks) h(c, st);
     this.onCrossStopHook?.(c, st);
   }
 
+  /** Layer hooks called when a car's front crosses a stop line. */
+  crossStopHooks: ((c: Car, st: StopRec) => void)[] = [];
+  /** Script hook (sim-check) for the same moment. */
   onCrossStopHook?: (c: Car, st: StopRec) => void;
+  /** Called for every violation (event scoring). */
+  onViolation?: (c: Car, kind: ViolationKind) => void;
 
   private onRed(sig: Signal, arms: string[], t: number) {
     for (const { car, stop } of this.carsInBox(sig.int)) {
       if (car.kind !== "car") continue;
-      if (arms.includes(stop.arm) && car.v < 0.5 && car.s > stop.boxS0 + 0.5) {
+      // A left turn waiting at its wait point for oncoming traffic is not blocking.
+      const waitingLeft = stop.turn === "left" && car.s <= leftWaitS(stop) + 0.5;
+      if (arms.includes(stop.arm) && car.v < 0.5 && car.s > stop.boxS0 + 0.5 && !waitingLeft) {
         this.violation(car, "blocked_box", `stopped in box ${sig.int.id} at red`);
       }
     }
@@ -746,6 +787,7 @@ export class Simulation {
     const p = pos ?? { x: c.pose.x, y: c.pose.y };
     this.metrics.violations.push({ kind, t: this.time, carId: c.id, brain: c.brain, pos: p, detail });
     this.metrics.brains[c.brain].violations++;
+    this.onViolation?.(c, kind);
     this.markers.push({ pos: p, t: this.time, label: kind.replace("_", " ").toUpperCase(), kind: "violation" });
     this.pushLog({ t: this.time, kind: "violation", text: `Car ${c.label}: ${kindText(kind)} (${detail})`, carId: c.id, brain: c.brain, severity: "bad" });
   }
@@ -910,6 +952,11 @@ export class Simulation {
   carById(id: number): Car | undefined {
     return this.cars.find((c) => c.id === id);
   }
+}
+
+/** Where a left-turning car waits inside the box for the oncoming gap. */
+export function leftWaitS(st: StopRec): number {
+  return st.boxS0 + 4;
 }
 
 function armWord(a: string): string {

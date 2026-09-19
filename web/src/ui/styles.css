@@ -883,6 +883,22 @@ table.brains td {
   border-bottom: 1px solid var(--rule-2);
 }
 
+.log .row.bad,
+.log .row.warn,
+.log .row.ok {
+  padding-left: 6px;
+  margin-left: -6px;
+  border-left: 3px solid var(--stop);
+}
+
+.log .row.warn {
+  border-left-color: var(--amber);
+}
+
+.log .row.ok {
+  border-left-color: var(--green);
+}
+
 .log .t {
   color: var(--ink-3);
   font-weight: 700;

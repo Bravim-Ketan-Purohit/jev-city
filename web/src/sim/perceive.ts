@@ -54,8 +54,9 @@ export function perceive(sim: Simulation, c: Car): CarPerception {
     const blocker = sim.conflictInBox(box.conn, c);
     f.intersectionClear = !blocker;
     if (blocker) x.boxDetail = describeCar(blocker, sim);
-    if (box.turn === "left") {
-      const gap = oncomingGap(sim, c, box.int, box.arm);
+    if (box.turn === "left" && !sim.isAllWay(box.int)) {
+      // Already in the box: finishing the turn needs a short gap only.
+      const gap = oncomingGap(sim, c, box.int, box.arm, 2.5);
       f.oncomingGapSafe = gap.safe;
       if (gap.detail) x.oncomingDetail = gap.detail;
     }
@@ -120,28 +121,40 @@ export function perceive(sim: Simulation, c: Car): CarPerception {
 }
 
 /** Oncoming traffic check for a permissive left turn. */
-function oncomingGap(sim: Simulation, c: Car, int: Intersection, arm: Arm): { safe: boolean; detail?: string } {
+function oncomingGap(
+  sim: Simulation,
+  c: Car,
+  int: Intersection,
+  arm: Arm,
+  needOverride?: number,
+): { safe: boolean; detail?: string } {
   const opp = OPPOSITE[arm];
   const oppLane = int.inLanes[opp];
   // Cars from the opposite arm already inside the box and going straight/right.
+  const mine = c.route.currentBox(c.s) ?? c.route.nextStop(c.s);
   for (const { car, stop } of sim.carsInBox(int)) {
     if (car === c || stop.arm !== opp || stop.turn === "left") continue;
+    if (mine && !sim.city.conflicts(stop.conn, mine.conn)) continue;
+    if (car.s > stop.boxS1 - 1) continue; // already leaving the box
     return { safe: false, detail: `${describeCar(car, sim)} is crossing now` };
   }
   if (!oppLane) return { safe: true };
   const sig = sim.signals.get(int.id);
-  const oppGreen = sig ? sig.lightFor(opp) === "green" || sig.lightFor(opp) === "yellow" : true;
-  if (!oppGreen) return { safe: true, detail: "oncoming traffic is held by a red light" };
+  // A police officer overrides the lights for both directions.
+  const officer = sim.officerFor(int, opp);
+  const oppLight = officer ? (officer === "go" ? "green" : "red") : sig ? sig.lightFor(opp) : "green";
+  if (oppLight === "red") return { safe: true, detail: "oncoming traffic is held by a red light" };
   // A left turn from a standstill takes about 5 s to clear the conflict area.
-  const needS = c.v < 1 ? 6.0 : 5.0;
+  const needS = needOverride ?? (c.v < 1 ? 6.0 : 5.0);
   let worst: { t: number; car: Car; d: number } | undefined;
   for (const o of sim.occ.get(oppLane.id) ?? []) {
     const car = o.car;
     if (car.kind === "stalled") continue;
     const st = car.route.nextStop(car.s);
     if (!st || st.int !== int || st.turn === "left") continue;
-    // A stopped car queued behind the stop line is not about to arrive.
-    if (car.v < 1 && st.s - car.s > 3) continue;
+    // A stopped car is not about to arrive if it is queued behind the line,
+    // or if it is at the line and its light is no longer green.
+    if (car.v < 1 && (st.s - car.s > 3 || oppLight !== "green")) continue;
     const dBox = st.boxS0 - car.s;
     const t = dBox / Math.max(car.v, 2.0);
     if (t < needS && (!worst || t < worst.t)) worst = { t, car, d: dBox };

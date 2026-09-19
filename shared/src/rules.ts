@@ -116,9 +116,10 @@ export function ruleDecide(f: PerceptionFacts): RuleOutput {
   if (f.inIntersection) {
     if (f.pedestriansInCrosswalk > 0 && (f.crosswalkAheadM ?? Infinity) < 15)
       return out("yield", "stop_at_line", 0.5);
+    // Left turn that entered on yellow: wait in the box for the oncoming gap.
+    if (f.turn === "left" && f.oncomingGapSafe === false) return out("yield", "proceed", 0.5);
     return out("proceed", "slow_down", 2);
   }
-
 
   // 4. Emergency vehicle about to cross the intersection: hold at the line.
   if (f.emergencyVehicleCrossingM !== undefined && nc.kind !== "none" && nc.distanceM < 60)
@@ -130,6 +131,7 @@ export function ruleDecide(f: PerceptionFacts): RuleOutput {
     if (f.pedestriansInCrosswalk > 0 && (f.crosswalkAheadM ?? Infinity) <= 40)
       return out("yield", "stop_at_line", 0.5);
     if (f.intersectionClear === false) return out("yield", "stop_at_line", 0.5);
+    if (f.turn === "left" && f.oncomingGapSafe === false) return out("yield", "stop_at_line", 0.5);
     return out("proceed", "slow_down", 2);
   }
 
@@ -153,6 +155,8 @@ export function ruleDecide(f: PerceptionFacts): RuleOutput {
         return out("proceed", "slow_down", cruise);
       case "yellow":
         if (nc.canStopComfortably) return out("stop_at_line", "proceed", approachLevel(nc.distanceM));
+        // Committed: a left turn enters and waits for the gap, anything else goes.
+        if (f.turn === "left" && f.oncomingGapSafe === false) return out("yield", "proceed", 1);
         return out("proceed", "stop_at_line", cruise);
       case "red":
       default:

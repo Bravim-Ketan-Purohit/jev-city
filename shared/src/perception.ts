@@ -9,7 +9,7 @@ export interface PerceptionExtras {
   /** Car following this one, if within 60 m. */
   vehicleBehind?: { distanceM: number; speedMph: number };
   /** Where the crosswalk sits relative to the car's path. */
-  crosswalkWhere?: "before the stop line" | "just past the stop line" | "just past the turn" | "ahead";
+  crosswalkWhere?: string;
   /** Replaces the default crosswalk sentence (e.g. children detail). */
   pedestrianDetail?: string;
   /** Detail on the oncoming traffic for a left turn. */

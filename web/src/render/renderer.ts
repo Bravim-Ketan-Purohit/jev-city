@@ -812,11 +812,21 @@ export class CityRenderer {
     }
   }
 
-  /** Extra dynamic layers (pedestrians, events) registered by later code. */
+  /** Extra dynamic layers drawn under the cars (pedestrians, event props). */
   overlays: ((ctx: CanvasRenderingContext2D, r: CityRenderer, alpha: number) => void)[] = [];
+  /** Layers drawn on top of everything (event callouts). */
+  postOverlays: ((ctx: CanvasRenderingContext2D, r: CityRenderer) => void)[] = [];
 
   get pixel(): number {
     return this.px;
+  }
+
+  get dprValue(): number {
+    return this.dpr;
+  }
+
+  reapplyWorld(ctx: CanvasRenderingContext2D) {
+    this.applyWorld(ctx);
   }
 
   render(alpha: number, opts: RenderOptions) {
@@ -846,6 +856,7 @@ export class CityRenderer {
       if (c) this.drawSelection(ctx, c);
     }
     this.drawMarkers(ctx);
+    for (const o of this.postOverlays) o(ctx, this);
     if (opts.showTitleBlock) this.drawChrome(opts);
   }
 

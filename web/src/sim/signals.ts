@@ -23,7 +23,17 @@ export class Signal {
   idx = 0;
   state: "green" | "yellow" | "allred" = "green";
   t = 0;
-  failed = false;
+  private _failed = false;
+  /** Sim time the signal last went to flashing red. */
+  failedSince = -1e9;
+  get failed(): boolean {
+    return this._failed;
+  }
+  set failed(v: boolean) {
+    if (v && !this._failed) this.failedSince = this.lastNow;
+    this._failed = v;
+  }
+  private lastNow = 0;
   /** Sim time each arm last turned red. */
   redSince: Record<Arm, number> = { N: -1e9, E: -1e9, S: -1e9, W: -1e9 };
   /** Called with the arms that just turned red. */
@@ -63,6 +73,7 @@ export class Signal {
   }
 
   step(dt: number, now: number) {
+    this.lastNow = now;
     this.advance(dt, now);
   }
 

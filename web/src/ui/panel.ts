@@ -208,11 +208,11 @@ export class Panel {
         for (const e of p.sim.log) {
           if (this.logFilter === "violations" && e.kind !== "violation" && e.kind !== "gridlock") continue;
           if (this.logFilter === "events" && e.kind !== "event" && e.kind !== "intervention" && e.kind !== "fallback") continue;
-          rows.push({ t: e.t, html: `${tag(p)}${esc(e.text)}`, sev: e.severity ?? "" });
+          rows.push({ t: e.t, html: `${tag(p)}${esc(e.text)}`, sev: e.severity ?? "info" });
         }
       }
       if (this.logFilter === "all" || this.logFilter === "decisions") {
-        const recent = p.scheduler.recent.slice(this.logFilter === "all" ? -40 : -150);
+        const recent = p.scheduler.recent.slice(this.logFilter === "all" ? -12 : -150);
         for (const r of recent) {
           const d = r.d;
           const lat = d.latencyMs ? ` · ${d.latencyMs.toFixed(0)} ms` : "";
@@ -224,7 +224,9 @@ export class Panel {
         }
       }
     }
-    rows.sort((a, b) => b.t - a.t);
+    // Newest first; at equal times, violations and events before decisions.
+    const rank = (r: Row) => (r.sev === "bad" ? 0 : r.sev === "warn" ? 1 : r.sev ? 2 : 3);
+    rows.sort((a, b) => b.t - a.t || rank(a) - rank(b));
     const key = `${this.logFilter}|${rows.length}|${rows[0]?.t ?? 0}`;
     if (key === this.lastLogKey) return;
     this.lastLogKey = key;
