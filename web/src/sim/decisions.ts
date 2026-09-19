@@ -71,6 +71,8 @@ export interface DecisionRecord {
 
 export class DecisionScheduler {
   private lastTick = -1e9;
+  /** Sim time each zone (or car) key last issued a request: max 3 Hz per key. */
+  private lastIssued = new Map<string, number>();
   private inFlight = new Set<string>();
   private inbox: InboxEntry[] = [];
   /** Recent decisions for the UI log (ring buffer). */
@@ -95,7 +97,10 @@ export class DecisionScheduler {
     const sim = this.sim;
     const now = sim.time;
     const cfg = sim.opts.decision;
-    if (now - this.lastTick < 1 / cfg.decisionHz - 1e-6) return;
+    const period = 1 / cfg.decisionHz - 1e-6;
+    // Group every step, but each key issues at most once per period and only
+    // when its previous request has returned.
+    if (now - this.lastTick < 0.05) return;
     this.lastTick = now;
 
     const groups = new Map<string, { brain: BrainName; zoneId: string; cars: Car[] }>();
@@ -109,6 +114,7 @@ export class DecisionScheduler {
 
     for (const [key, g] of groups) {
       if (this.inFlight.has(key)) continue;
+      if (now - (this.lastIssued.get(key) ?? -1e9) < period) continue;
       const brain = this.brains[g.brain];
       if (!brain) continue;
       const remote = !brain.decideSync;
@@ -116,6 +122,7 @@ export class DecisionScheduler {
         sim.metrics.throttled++;
         continue;
       }
+      this.lastIssued.set(key, now);
       const cars = g.cars.map((c) => {
         const p = perceive(sim, c);
         c.perception = p;

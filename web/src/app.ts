@@ -214,10 +214,7 @@ export class App {
         { v: "4", label: "4×" },
       ],
       String(s.speed),
-      (v) => {
-        s.speed = Number(v);
-        this.renderTopbar();
-      },
+      (v) => this.setSpeed(Number(v)),
     );
     const time = el("div", { class: "field" }, [el("label", { text: "Time" }), el("div", { style: "display:flex;gap:5px" }, [pause, step, speed])]);
     this.top.clock = el("div", { class: "num", text: "--:--:--" });
@@ -403,14 +400,24 @@ export class App {
       e.preventDefault();
       this.togglePause();
     } else if (e.key === "s" || e.key === "S") this.stepOnce();
-    else if (e.key === "1" || e.key === "2" || e.key === "4") {
-      this.settings.speed = Number(e.key);
-      this.renderTopbar();
-    } else if (e.key === "Escape") {
+    else if (e.key === "1" || e.key === "2" || e.key === "4") this.setSpeed(Number(e.key)); else if (e.key === "Escape") {
       this.placing = null;
       this.selected = null;
       this.toolbar.render();
       this.panel.update();
+    }
+  }
+
+  setSpeed(speed: number) {
+    this.settings.speed = speed;
+    this.renderTopbar();
+    const remote = this.panes.some((p) => p.sim.cars.some((c) => c.brain !== "rules"));
+    if (speed > 1 && remote) {
+      this.flash(
+        `At ${speed}× the model's real-time latency uses ${speed}× more of the 1 s decision lifetime: expect stale-decision fallbacks.`,
+        "warn",
+        5000,
+      );
     }
   }
 

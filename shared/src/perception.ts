@@ -119,12 +119,14 @@ export function renderPerceptionText(
   }
 
   if (!f.inIntersection && nc.kind !== "none") {
-    if (f.intersectionClear === false) {
+    // Box and gap details only matter when this car could be entering soon.
+    const relevant = nc.lightState !== "red" && nc.distanceM < 40;
+    if (f.intersectionClear === false && relevant) {
       lines.push(`Crossing traffic inside the intersection box: YES${x.boxDetail ? ` (${x.boxDetail})` : ""}.`);
-    } else if (allWay && f.intersectionClear) {
+    } else if (allWay && f.intersectionClear && nc.distanceM < 40) {
       lines.push("Crossing traffic inside the intersection box: none.");
     }
-    if (f.turn === "left" && f.oncomingGapSafe !== undefined) {
+    if (f.turn === "left" && f.oncomingGapSafe !== undefined && relevant) {
       lines.push(
         `Oncoming traffic gap long enough to complete the left turn: ${f.oncomingGapSafe ? "YES" : "NO"}${x.oncomingDetail ? ` (${x.oncomingDetail})` : ""}.`,
       );

@@ -48,8 +48,9 @@ export class MockJevBrain implements Brain {
     const flip = rng.chance(this.opts.flipRate);
     const best = flip ? r.alt : r.action;
     const second = flip ? r.action : r.alt;
-    // Peak between 0.55 and 0.97, most of the rest on the runner-up.
-    const peak = clamp(0.82 + rng.normal() * 0.1, 0.55, 0.97);
+    // Peak usually 0.85-0.98, lower when the scene is hazardous, with most
+    // of the remainder on the runner-up.
+    const peak = clamp(0.93 - 0.07 * r.hazard + rng.normal() * 0.06, 0.45, 0.99);
     const runner = (1 - peak) * rng.range(0.5, 0.85);
     let rest = 1 - peak - runner;
     const probs = Object.fromEntries(ACTIONS.map((a) => [a, 0])) as Record<Action, number>;
