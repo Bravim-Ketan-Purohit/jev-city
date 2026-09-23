@@ -100,6 +100,18 @@ button {
   }
 }
 
+/* Keep the links visible on smaller screens by dropping the hint text. */
+@media (max-width: 1500px) {
+  .toolbar .hint {
+    display: none;
+  }
+
+  .social {
+    margin-left: auto;
+    border-left: 0;
+  }
+}
+
 @media (max-width: 1400px) {
   .field > label {
     font-size: 9px;
@@ -1063,6 +1075,34 @@ table.brains td {
   width: 30px;
   height: 30px;
   flex: none;
+}
+
+.social {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding-left: 13px;
+  margin-left: 13px;
+  border-left: 1px solid var(--rule-2);
+  flex: none;
+}
+
+.social a {
+  display: flex;
+  color: var(--ink-3);
+  transition: color 0.15s;
+}
+
+.social a:hover,
+.social a:focus-visible {
+  color: var(--ink);
+}
+
+.social svg {
+  width: 15px;
+  height: 15px;
+  fill: currentColor;
+  display: block;
 }
 
 .hint {
