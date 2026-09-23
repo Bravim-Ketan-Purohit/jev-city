@@ -10,7 +10,11 @@ export interface JevHealth {
   error?: string;
 }
 
+/** Set at build time for the hosted demo, which ships without a server. */
+const STATIC_DEMO = import.meta.env.VITE_STATIC_DEMO === "1";
+
 export async function checkJevHealth(): Promise<JevHealth> {
+  if (STATIC_DEMO) return { ok: false, hasKey: false, error: "static demo build" };
   try {
     const r = await fetch("/api/health", { cache: "no-store" });
     if (!r.ok) return { ok: false, hasKey: false, error: `HTTP ${r.status}` };
