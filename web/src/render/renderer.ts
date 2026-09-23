@@ -95,6 +95,11 @@ export class CityRenderer {
     this.bgKey = "";
   }
 
+  /** Drop the cached background layer so the next frame redraws it. */
+  invalidate() {
+    this.bgKey = "";
+  }
+
   resetView() {
     this.view = { cx: (WORLD.x0 + WORLD.x1) / 2, cy: (WORLD.y0 + WORLD.y1) / 2, scale: this.fitScale };
     this.bgKey = "";

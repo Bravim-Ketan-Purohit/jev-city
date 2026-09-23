@@ -369,6 +369,11 @@ export class App {
     for (const p of this.panes) p.renderer.resize();
   }
 
+  /** Redraw the cached map background (after fonts load, for instance). */
+  invalidateRenderers() {
+    for (const p of this.panes) p.renderer.invalidate();
+  }
+
   // ------------------------------------------------------------------ input
 
   private wireCanvas(pane: Pane) {
