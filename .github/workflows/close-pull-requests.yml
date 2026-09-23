@@ -1,0 +1,26 @@
+# This project is published for reading and running, not for contributions.
+# Pull requests are closed automatically with a short note.
+name: Close pull requests
+
+on:
+  pull_request_target:
+    types: [opened, reopened]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  close:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const body = [
+              'Thanks for the interest, but this repo is closed to contributions.',
+              '',
+              'It is a finished experiment, kept online so people can read the code and run it.',
+              'The MIT license lets you fork it and take it anywhere you like.',
+            ].join('\n');
+            await github.rest.issues.createComment({ ...context.repo, issue_number: context.payload.pull_request.number, body });
+            await github.rest.pulls.update({ ...context.repo, pull_number: context.payload.pull_request.number, state: 'closed' });

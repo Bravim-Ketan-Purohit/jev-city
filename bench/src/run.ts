@@ -325,6 +325,10 @@ const out = {
   records,
 };
 writeFileSync(resolve(ROOT, "results.json"), JSON.stringify(out, null, 2) + "\n");
+// Small static copy for the app's Results tab (works on a hosted build with no server).
+const { records: _r, ...summaryOnly } = out;
+void _r;
+writeFileSync(resolve(ROOT, "../web/public/bench-summary.json"), JSON.stringify(summaryOnly, null, 2) + "\n");
 
 // ------------------------------------------------------------------ markdown
 

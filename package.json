@@ -1,6 +1,7 @@
 {
   "name": "jev-city",
   "private": true,
+  "packageManager": "pnpm@11.18.0",
   "type": "module",
   "scripts": {
     "dev": "concurrently -k -n server,web -c green,blue \"pnpm --filter @jev-city/server dev\" \"pnpm --filter @jev-city/web dev\"",

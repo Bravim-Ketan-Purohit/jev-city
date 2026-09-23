@@ -46,6 +46,9 @@ export interface Settings {
   warmup: number;
 }
 
+/** A build served from anywhere but localhost has no Jev server behind it. */
+export const HOSTED = !/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
+
 const BRAIN_TITLE: Record<BrainMode, string> = {
   rules: "RULES",
   "mock-jev": "MOCK JEV",
@@ -129,7 +132,13 @@ export class App {
     }
     this.renderTopbar();
     if (!this.health.ok && (this.settings.brainMode === "jev" || this.settings.view === "sbs")) {
-      this.flash("Jev is unavailable: start the server with TYPESAFE_API_KEY in .env. Cars fall back to cautious mode.", "warn", 6000);
+      this.flash(
+        HOSTED
+          ? "This hosted demo runs the Mock brain. Clone the repo and add a TypeSafe key to drive with Jev."
+          : "Jev is unavailable: start the server with TYPESAFE_API_KEY in .env. Cars fall back to cautious mode.",
+        "warn",
+        6000,
+      );
     }
   }
 
@@ -172,7 +181,11 @@ export class App {
       el("div", { class: "brand-sign" }, [el("span", { text: "JEV CITY" })]),
       el("div", { class: "brand-sub", html: "Traffic judgment<br/>simulator" }),
     ]);
-    const jevTitle = this.health.ok ? `Jev (${this.health.model})` : "Needs the server and TYPESAFE_API_KEY";
+    const jevTitle = this.health.ok
+      ? `Jev (${this.health.model})`
+      : HOSTED
+        ? "Live Jev needs your own TypeSafe key: clone the repo and run it locally"
+        : "Needs the server and TYPESAFE_API_KEY";
     const sbsBrains = el("div", { class: "field" }, [
       el("label", { text: "Side by side" }),
       el("div", { class: "seg" }, [

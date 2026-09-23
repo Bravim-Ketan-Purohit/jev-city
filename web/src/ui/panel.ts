@@ -212,14 +212,17 @@ export class Panel {
     if (this.resultsShown) return;
     this.resultsShown = true;
     this.body.innerHTML = `<div class="empty">Loading benchmark results…</div>`;
-    fetch("/api/bench", { cache: "no-store" })
+    // The static copy is written by `pnpm bench` and ships with the build; the
+    // server route is a fallback for a checkout whose copy is out of date.
+    fetch("/bench-summary.json", { cache: "no-store" })
+      .then((r) => (r.ok ? r : fetch("/api/bench", { cache: "no-store" })))
       .then((r) => r.json())
       .then((j) => {
         this.results = j;
         if (this.tab === "results") this.renderResults();
       })
       .catch(() => {
-        this.results = { error: "The server is not running. Start it with pnpm dev." };
+        this.results = { error: "No benchmark results here yet. Run pnpm bench." };
         if (this.tab === "results") this.renderResults();
       });
   }

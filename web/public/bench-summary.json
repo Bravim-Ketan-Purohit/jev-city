@@ -1,0 +1,250 @@
+{
+  "generatedAt": "2026-09-19T09:32:28.295Z",
+  "model": "jev-1.13.0",
+  "sdk": "0.6.0",
+  "runs": 3,
+  "scenarioCount": 100,
+  "pricePerMTok": 0.042,
+  "summaries": [
+    {
+      "brain": "rules",
+      "n": 300,
+      "errors": 0,
+      "accuracy": 0.9,
+      "strictAccuracy": 0.8,
+      "byCategory": {
+        "rule": {
+          "n": 120,
+          "accuracy": 1,
+          "strict": 1
+        },
+        "judgment": {
+          "n": 120,
+          "accuracy": 0.75,
+          "strict": 0.675
+        },
+        "ambiguous": {
+          "n": 60,
+          "accuracy": 1,
+          "strict": 0.65
+        }
+      },
+      "brierMustStop": 0.03,
+      "calibration": [
+        {
+          "bucket": "below 0.5",
+          "n": 0,
+          "meanConfidence": null,
+          "accuracy": null
+        },
+        {
+          "bucket": "0.5 to 0.6",
+          "n": 0,
+          "meanConfidence": null,
+          "accuracy": null
+        },
+        {
+          "bucket": "0.6 to 0.7",
+          "n": 0,
+          "meanConfidence": null,
+          "accuracy": null
+        },
+        {
+          "bucket": "0.7 to 0.8",
+          "n": 0,
+          "meanConfidence": null,
+          "accuracy": null
+        },
+        {
+          "bucket": "0.8 to 0.9",
+          "n": 0,
+          "meanConfidence": null,
+          "accuracy": null
+        },
+        {
+          "bucket": "0.9 to 1.0",
+          "n": 300,
+          "meanConfidence": 1,
+          "accuracy": 0.9
+        }
+      ],
+      "latency": {
+        "p50": 0.0013749999999959073,
+        "p95": 0.006249999999994316
+      },
+      "tokens": {
+        "total": 0,
+        "perRequest": 0,
+        "estimated": false
+      },
+      "costUsd": 0,
+      "consistency": {
+        "allRunsAgree": 1,
+        "scenarios": 100
+      },
+      "models": [
+        "rules"
+      ]
+    },
+    {
+      "brain": "mock-jev",
+      "n": 300,
+      "errors": 0,
+      "accuracy": 0.8733333333333333,
+      "strictAccuracy": 0.7633333333333333,
+      "byCategory": {
+        "rule": {
+          "n": 120,
+          "accuracy": 0.9666666666666667,
+          "strict": 0.9583333333333334
+        },
+        "judgment": {
+          "n": 120,
+          "accuracy": 0.7333333333333333,
+          "strict": 0.6416666666666667
+        },
+        "ambiguous": {
+          "n": 60,
+          "accuracy": 0.9666666666666667,
+          "strict": 0.6166666666666667
+        }
+      },
+      "brierMustStop": 0.03236062896638756,
+      "calibration": [
+        {
+          "bucket": "below 0.5",
+          "n": 3,
+          "meanConfidence": 0.46554570416177815,
+          "accuracy": 1
+        },
+        {
+          "bucket": "0.5 to 0.6",
+          "n": 32,
+          "meanConfidence": 0.5600077301760659,
+          "accuracy": 0.90625
+        },
+        {
+          "bucket": "0.6 to 0.7",
+          "n": 63,
+          "meanConfidence": 0.6526094009738163,
+          "accuracy": 0.8253968253968254
+        },
+        {
+          "bucket": "0.7 to 0.8",
+          "n": 87,
+          "meanConfidence": 0.7517965071745661,
+          "accuracy": 0.8735632183908046
+        },
+        {
+          "bucket": "0.8 to 0.9",
+          "n": 57,
+          "meanConfidence": 0.8414422660935796,
+          "accuracy": 0.8596491228070176
+        },
+        {
+          "bucket": "0.9 to 1.0",
+          "n": 58,
+          "meanConfidence": 0.9483976154244641,
+          "accuracy": 0.9137931034482759
+        }
+      ],
+      "latency": {
+        "p50": 302.10950990673155,
+        "p95": 483.00712747022044
+      },
+      "tokens": {
+        "total": 175233,
+        "perRequest": 584.11,
+        "estimated": true
+      },
+      "costUsd": 0.007359786,
+      "consistency": {
+        "allRunsAgree": 0.84,
+        "scenarios": 100
+      },
+      "models": [
+        "mock-jev"
+      ]
+    },
+    {
+      "brain": "jev",
+      "n": 300,
+      "errors": 0,
+      "accuracy": 0.8833333333333333,
+      "strictAccuracy": 0.7433333333333333,
+      "byCategory": {
+        "rule": {
+          "n": 120,
+          "accuracy": 0.8833333333333333,
+          "strict": 0.8583333333333333
+        },
+        "judgment": {
+          "n": 120,
+          "accuracy": 0.85,
+          "strict": 0.675
+        },
+        "ambiguous": {
+          "n": 60,
+          "accuracy": 0.95,
+          "strict": 0.65
+        }
+      },
+      "brierMustStop": 0.10894766666666666,
+      "calibration": [
+        {
+          "bucket": "below 0.5",
+          "n": 68,
+          "meanConfidence": 0.3798529411764706,
+          "accuracy": 0.7058823529411765
+        },
+        {
+          "bucket": "0.5 to 0.6",
+          "n": 20,
+          "meanConfidence": 0.5455,
+          "accuracy": 0.7
+        },
+        {
+          "bucket": "0.6 to 0.7",
+          "n": 24,
+          "meanConfidence": 0.6425000000000001,
+          "accuracy": 0.875
+        },
+        {
+          "bucket": "0.7 to 0.8",
+          "n": 38,
+          "meanConfidence": 0.7505263157894737,
+          "accuracy": 0.9736842105263158
+        },
+        {
+          "bucket": "0.8 to 0.9",
+          "n": 43,
+          "meanConfidence": 0.840697674418605,
+          "accuracy": 0.8837209302325582
+        },
+        {
+          "bucket": "0.9 to 1.0",
+          "n": 107,
+          "meanConfidence": 0.9717757009345791,
+          "accuracy": 1
+        }
+      ],
+      "latency": {
+        "p50": 198.99743800000033,
+        "p95": 395.60889165000015
+      },
+      "tokens": {
+        "total": 279558,
+        "perRequest": 931.86,
+        "estimated": false
+      },
+      "costUsd": 0.011741436,
+      "consistency": {
+        "allRunsAgree": 0.95,
+        "scenarios": 100
+      },
+      "models": [
+        "jev-1.13.0"
+      ]
+    }
+  ]
+}
